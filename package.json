@@ -1,0 +1,19 @@
+{
+  "name": "ff-telegram-bot",
+  "version": "1.0.0",
+  "description": "Free Fire Info and Unban Telegram Bot with Paytm Merchant Integration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["freefire", "telegram-bot", "paytm"],
+  "author": "WantedModz",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.21.1",
+    "form-data": "^4.0.0",
+    "qrcode": "^1.5.4",
+    "telegraf": "^4.16.3"
+  }
+}

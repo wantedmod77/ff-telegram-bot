@@ -1,0 +1,10 @@
+{
+  "paytm": {
+    "enabled": true,
+    "mid": "mpnvNG14775819341665",
+    "merchant_key": "mpnvNG14775819341665",
+    "upi_id": "paytm.s4eazcu@pty",
+    "merchant_name": "FreeFire info",
+    "auto_verify": true
+  }
+}
