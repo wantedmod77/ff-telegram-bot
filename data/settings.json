@@ -1,8 +1,11 @@
 {
-  "admin_ids": [7994736557],
+  "admin_ids": [
+    7994736557
+  ],
   "force_channel_username": "@freefireofficialinfoupdates",
   "force_channel_link": "https://t.me/freefireofficialinfoupdates",
   "force_join_enabled": true,
   "default_region": "IND",
-  "support_link": "https://t.me/wantedmod52"
+  "support_link": "https://t.me/RajCoderFf",
+  "server_login_base_url": "https://ff-telegram-bot-1t2u.onrender.com/"
 }

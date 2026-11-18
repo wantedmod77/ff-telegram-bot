@@ -91,11 +91,11 @@ async function getPlayerInfo(uid, region = "IND") {
 
     return {
         success: false,
-        error: "Player data नहीं मिल पाया। कृपया UID या Server Region चेक करें।"
+        error: "ᴘʟᴀʏᴇʀ ᴅᴀᴛᴀ ɴᴏᴛ ғᴏᴜɴᴅ. ᴘʟᴇᴀsᴇ ᴄʜᴇᴄᴋ ᴜɪᴅ ᴏʀ sᴇʀᴠᴇʀ ʀᴇɢɪᴏɴ."
     };
 }
 
-// ─── Format For Feature 1: FF ID Unban Screen (Hindi + English Mix) ──────────
+// ─── Format For Feature 1: FF ID Unban Screen (Small Caps English) ───────────
 function formatUnbanPreview(data, uid, region) {
     const b = data.basicInfo || data.basicinfo || {};
     const c = data.clanBasicInfo || data.clanbasicinfo || {};
@@ -116,17 +116,17 @@ function formatUnbanPreview(data, uid, region) {
     }
 
     const lines = [
-        "🛡️ <b>FF ACCOUNT BAN VERIFICATION / खाता सत्यापन</b> 🛡️",
+        "🛡️ <b>ғғ ᴀᴄᴄᴏᴜɴᴛ ʙᴀɴ ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ</b> 🛡️",
         "━━━━━━━━━━━━━━━━━━━━━━",
-        `👤 <b>Player Name (नाम):</b> <code>${b.nickname || "Unknown"}</code>`,
-        `🆔 <b>Account UID:</b> <code>${b.accountId || b.accountid || uid}</code>`,
-        `🌍 <b>Server Region (क्षेत्र):</b> <b>${regionFlag}</b>`,
-        `⭐ <b>Level (लेवल):</b> <b>${b.level || "N/A"}</b>`,
-        `🏰 <b>Guild (गिल्ड):</b> <b>${c.clanName || "None"}</b>`,
-        `💬 <b>Signature (बायो):</b> <i>${s.signature || "None"}</i>`,
+        `👤 <b>ᴘʟᴀʏᴇʀ ɴᴀᴍᴇ:</b> <code>${b.nickname || "Unknown"}</code>`,
+        `🆔 <b>ᴀᴄᴄᴏᴜɴᴛ ᴜɪᴅ:</b> <code>${b.accountId || b.accountid || uid}</code>`,
+        `🌍 <b>sᴇʀᴠᴇʀ ʀᴇɢɪᴏɴ:</b> <b>${regionFlag}</b>`,
+        `⭐ <b>ʟᴇᴠᴇʟ:</b> <b>${b.level || "N/A"}</b>`,
+        `🏰 <b>ɢᴜɪʟᴅ:</b> <b>${c.clanName || "None"}</b>`,
+        `💬 <b>sɪɢɴᴀᴛᴜʀᴇ:</b> <i>${s.signature || "None"}</i>`,
         "━━━━━━━━━━━━━━━━━━━━━━",
-        `📅 <b>Ban Date (बैन तारीख):</b> <code>${banDate}</code>`,
-        `⏰ <b>Ban Time (बैन समय):</b> <code>${banTime}</code>`,
+        `📅 <b>ʙᴀɴ ᴅᴀᴛᴇ:</b> <code>${banDate}</code>`,
+        `⏰ <b>ʙᴀɴ ᴛɪᴍᴇ:</b> <code>${banTime}</code>`,
         "━━━━━━━━━━━━━━━━━━━━━━",
     ];
 

@@ -184,12 +184,12 @@ const defaultSettings = {
     force_channel_link: config.FORCE_CHANNEL_LINK || "https://t.me/freefireofficialinfoupdates",
     force_join_enabled: true,
     default_region: "IND",
-    support_link: "https://t.me/wantedmod52",
-    server_login_base_url: "http://109.71.252.111:30008/",
-    link_play_game_pc: "https://t.me/wantedmod52",
+    support_link: "https://t.me/RajCoderFf",
+    server_login_base_url: "https://ff-telegram-bot-1t2u.onrender.com/",
+    link_play_game_pc: "https://t.me/RajCoderFf",
     link_30_day_ban: "https://t.me/freefireofficialinfoupdates",
-    link_how_to_get_token: "https://t.me/wantedmod52",
-    link_follow_instagram: "https://instagram.com/wantedmodz"
+    link_how_to_get_token: "https://t.me/RajCoderFf",
+    link_follow_instagram: "https://t.me/RajCoderFf"
 };
 
 function getSettings() {
@@ -227,7 +227,7 @@ const defaultGateway = {
         enabled: true,
         mid: "",
         merchant_key: "",
-        upi_id: "wantedmod52@paytm",
+        upi_id: "rajcoderff@paytm",
         merchant_name: "FREE FIRE UNBAN SERVICES",
         auto_verify: true
     }

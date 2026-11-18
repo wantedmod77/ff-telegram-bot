@@ -63,19 +63,19 @@ async function sendForceJoinPrompt(ctx) {
     const settings = getSettings();
     const channelLink = settings.force_channel_link || `https://t.me/${settings.force_channel_username?.replace("@", "")}`;
     const msg = `
-⚠️ <b>चैनल जॉइन करना ज़रूरी है / CHANNEL JOIN REQUIRED</b> ⚠️
+⚠️ <b>ᴄʜᴀɴɴᴇʟ ᴊᴏɪɴ ʀᴇǫᴜɪʀᴇᴅ</b> ⚠️
 ━━━━━━━━━━━━━━━━━━━━━━
-Bot का उपयोग करने के लिए पहले हमारा <b>Official Telegram Channel</b> जॉइन करें:
+ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴏᴜʀ <b>ᴏғғɪᴄɪᴀʟ ᴛᴇʟᴇɢʀᴀᴍ ᴄʜᴀɴɴᴇʟ</b> ᴛᴏ ᴜsᴇ ᴛʜɪs ʙᴏᴛ:
 
 📢 <b>Official Channel:</b> ${settings.force_channel_username}
 
-👇 <b>नीचे दिए गए Link से चैनल Join करें, फिर 'Verify' बटन दबाएं:</b>
+👇 <b>ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ʙᴇʟᴏᴡ, ᴛʜᴇɴ ᴄʟɪᴄᴋ 'ᴠᴇʀɪғʏ':</b>
 `;
     return ctx.reply(msg, {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([
-            [Markup.button.url("📢 Official Channel Join करें", channelLink)],
-            [Markup.button.callback("✅ Verify / Joined (सत्यापित करें)", "verify_channel_join")]
+            [Markup.button.url("📢 ᴊᴏɪɴ ᴏғғɪᴄɪᴀʟ ᴄʜᴀɴɴᴇʟ", channelLink)],
+            [Markup.button.callback("✅ ᴠᴇʀɪғʏ / ᴊᴏɪɴᴇᴅ", "verify_channel_join")]
         ]).reply_markup
     });
 }
@@ -96,19 +96,19 @@ async function sendHomeScreen(ctx) {
     registerUser(user);
 
     const welcomeMsg = `
-👋 <b>नमस्ते / Welcome, ${user.first_name || "Player"}!</b> 🔥
+👋 <b>ᴡᴇʟᴄᴏᴍᴇ, ${user.first_name || "Player"}!</b> 🔥
 
-<b>Free Fire Official Multi-Utility Bot</b> में आपका स्वागत है! 🎮
+<b>ʀᴀᴊ ᴄᴏᴅᴇʀ ғғ — ᴏғғɪᴄɪᴀʟ ᴍᴜʟᴛɪ-ᴜᴛɪʟɪᴛʏ ʙᴏᴛ</b> 🎮
 
 ━━━━━━━━━━━━━━━━━━━━━━
-⚡ <b>Available Services (उपलब्ध सेवाएं):</b>
-🔑 <b>Ban Login:</b> Token से Login Session & File Generator
-🔓 <b>FF ID Unban:</b> Ban Audit & Unban Packages (3D, 7D, 30D, 90D, Perm)
-📊 <b>FF ID Info:</b> Full Player Profile (Avatar, Banner, Outfits, Rank)
-💳 <b>Add Balance:</b> Paytm QR से Wallet Recharge & 1-Click Payment
+⚡ <b>ᴀᴠᴀɪʟᴀʙʟᴇ sᴇʀᴠɪᴄᴇs:</b>
+🔑 <b>ʙᴀɴ ʟᴏɢɪɴ:</b> ᴛᴏᴋᴇɴ ᴛᴏ ʟᴏɢɪɴ sᴇssɪᴏɴ & ғɪʟᴇ ɢᴇɴᴇʀᴀᴛᴏʀ
+🔓 <b>ғғ ɪᴅ ᴜɴʙᴀɴ:</b> ʙᴀɴ ᴀᴜᴅɪᴛ & ᴜɴʙᴀɴ ᴘᴀᴄᴋᴀɢᴇs (3ᴅ, 7ᴅ, 30ᴅ, 90ᴅ, ᴘᴇʀᴍ)
+📊 <b>ғғ ɪᴅ ɪɴғᴏ:</b> ғᴜʟʟ ᴘʟᴀʏᴇʀ ᴘʀᴏғɪʟᴇ (ᴀᴠᴀᴛᴀʀ, ʙᴀɴɴᴇʀ, ᴏᴜᴛғɪᴛ, ʀᴀɴᴋ)
+💳 <b>ᴀᴅᴅ ʙᴀʟᴀɴᴄᴇ:</b> ᴡᴀʟʟᴇᴛ ʀᴇᴄʜᴀʀɢᴇ (ᴘᴀʏᴛᴍ ǫʀ) & ɪɴsᴛᴀɴᴛ ᴘᴀʏ
 ━━━━━━━━━━━━━━━━━━━━━━
 
-👇 <b>नीचे दिए गए Buttons पर Tap करके शुरू करें:</b>
+👇 <b>ᴛᴀᴘ ᴀ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ sᴛᴀʀᴛ:</b>
 `;
 
     await ctx.reply(welcomeMsg, {
@@ -133,11 +133,11 @@ bot.action("verify_channel_join", async (ctx) => {
     await ctx.answerCbQuery();
     const joined = await isUserMember(ctx, ctx.from.id);
     if (!joined) {
-        return ctx.reply("❌ <b>आपने अभी तक चैनल जॉइन नहीं किया है!</b>\n\nकृपया पहले Official Channel जॉइन करें, फिर 'Verify' बटन पर क्लिक करें।", {
+        return ctx.reply("❌ <b>ʏᴏᴜ ʜᴀᴠᴇ ɴᴏᴛ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ!</b>\n\nᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴏᴜʀ ᴏғғɪᴄɪᴀʟ ᴄʜᴀɴɴᴇʟ ғɪʀsᴛ, ᴛʜᴇɴ ᴄʟɪᴄᴋ ᴠᴇʀɪғʏ.", {
             parse_mode: "HTML"
         });
     }
-    await ctx.reply("🎉 <b>सत्यापन सफल / Verification Successful!</b>\nआपका स्वागत है!", { parse_mode: "HTML" });
+    await ctx.reply("🎉 <b>ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟ!</b>\nᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ʙᴏᴛ!", { parse_mode: "HTML" });
     return sendHomeScreen(ctx);
 });
 
@@ -149,11 +149,11 @@ async function handleUnbanRequest(ctx) {
     userStates.set(ctx.from.id, { mode: "UNBAN" });
 
     return ctx.reply(
-        "🔓 <b>FF ID BAN AUDIT & UNBAN</b>\n━━━━━━━━━━━━━━━━━━━━━━\n\n🎮 <b>कृपया अपनी Free Fire Game UID भेजें:</b>\n\n<i>(उदाहरण / Example: <code>2540951574</code>)</i>",
+        "🔓 <b>ғғ ɪᴅ ʙᴀɴ ᴀᴜᴅɪᴛ & ᴜɴʙᴀɴ</b>\n━━━━━━━━━━━━━━━━━━━━━━\n\n🎮 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ʏᴏᴜʀ ғʀᴇᴇ ғɪʀᴇ ᴜɪᴅ:</b>\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>2540951574</code>)</i>",
         {
             parse_mode: "HTML",
             reply_markup: Markup.inlineKeyboard([
-                [Markup.button.callback("❌ Cancel (रद्द करें)", "cancel_action")]
+                [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]
             ]).reply_markup
         }
     );
@@ -170,11 +170,11 @@ async function handleInfoRequest(ctx) {
     userStates.set(ctx.from.id, { mode: "INFO" });
 
     return ctx.reply(
-        "📊 <b>FF ID PROFILE LOOKUP</b>\n━━━━━━━━━━━━━━━━━━━━━━\n\n🔍 <b>कृपया जिस Account की पूरी Info चाहिए, उसकी UID भेजें:</b>\n\n<i>(उदाहरण / Example: <code>2540951574</code>)</i>",
+        "📊 <b>ғғ ɪᴅ ᴘʀᴏғɪʟᴇ ʟᴏᴏᴋᴜᴘ</b>\n━━━━━━━━━━━━━━━━━━━━━━\n\n🔍 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ᴛʜᴇ ғʀᴇᴇ ғɪʀᴇ ᴜɪᴅ:</b>\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>2540951574</code>)</i>",
         {
             parse_mode: "HTML",
             reply_markup: Markup.inlineKeyboard([
-                [Markup.button.callback("❌ Cancel (रद्द करें)", "cancel_action")]
+                [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]
             ]).reply_markup
         }
     );
@@ -191,22 +191,22 @@ async function handleStatusRequest(ctx) {
     const user = registerUser(ctx.from);
     const bal = getUserBalance(user.id);
     const msg = `
-👤 <b>YOUR PROFILE & STATUS (उपयोगकर्ता प्रोफ़ाइल)</b>
+👤 <b>ʏᴏᴜʀ ᴘʀᴏғɪʟᴇ & sᴛᴀᴛᴜs</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-📛 <b>Name (नाम):</b> <b>${user.first_name || ""} ${user.last_name || ""}</b>
+📛 <b>ɴᴀᴍᴇ:</b> <b>${user.first_name || ""} ${user.last_name || ""}</b>
 🏷️ <b>Username:</b> ${user.username || "None"}
-🆔 <b>Telegram Chat ID:</b> <code>${user.id}</code>
-💼 <b>Wallet Balance:</b> <b>₹${bal.toFixed(2)}</b>
-📅 <b>Bot Joined On (शामिल हुए):</b> <code>${user.joined_formatted}</code>
-📊 <b>Total Searches (कुल सर्च):</b> <b>${user.queries_count || 0}</b>
-🛡️ <b>Status (स्थिति):</b> <b>✅ Verified Member (सत्यापित सदस्य)</b>
+🆔 <b>ᴛᴇʟᴇɢʀᴀᴍ ɪᴅ:</b> <code>${user.id}</code>
+💼 <b>ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ:</b> <b>₹${bal.toFixed(2)}</b>
+📅 <b>ᴊᴏɪɴᴇᴅ ᴅᴀᴛᴇ:</b> <code>${user.joined_formatted}</code>
+📊 <b>ᴛᴏᴛᴀʟ sᴇᴀʀᴄʜᴇs:</b> <b>${user.queries_count || 0}</b>
+🛡️ <b>sᴛᴀᴛᴜs:</b> <b>✅ ᴠᴇʀɪғɪᴇᴅ ᴍᴇᴍʙᴇʀ</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-⚡ <i>Bot is Active & Operational</i>
+⚡ <i>ʙᴏᴛ ɪs ᴀᴄᴛɪᴠᴇ & ᴏᴘᴇʀᴀᴛɪᴏɴᴀʟ 24/7</i>
 `;
     return ctx.reply(msg, {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([
-            [Markup.button.callback("💳 Add Balance / पैसे जोड़ें", "prompt_add_balance")]
+            [Markup.button.callback("💳 ᴀᴅᴅ ʙᴀʟᴀɴᴄᴇ", "prompt_add_balance")]
         ]).reply_markup
     });
 }
@@ -221,12 +221,12 @@ async function handleBanLoginRequest(ctx) {
     userStates.set(ctx.from.id, { mode: "WAITING_BAN_TOKEN" });
 
     const s = getSettings();
-    const linkPlayPc = s.link_play_game_pc || "https://t.me/wantedmod52";
+    const linkPlayPc = s.link_play_game_pc || "https://t.me/RajCoderFf";
     const link30Day = s.link_30_day_ban || "https://t.me/freefireofficialinfoupdates";
-    const linkHowToken = s.link_how_to_get_token || "https://t.me/wantedmod52";
-    const linkInsta = s.link_follow_instagram || "https://instagram.com/wantedmodz";
+    const linkHowToken = s.link_how_to_get_token || "https://t.me/RajCoderFf";
+    const linkInsta = s.link_follow_instagram || "https://t.me/RajCoderFf";
 
-    const msg = `WANTED\nBAN LOGIN\n\nACCESS TOKEN CAN BE USED TO LOGIN TO YOUR BANNED GAME ACCOUNT AND CHECK YOUR GAME PROFILE.\n\nPLEASE SEND YOUR <b>ACCESS TOKEN</b> TO CREATE A NEW SESSION.\n\n📝 <b>Send your access token below:</b>\n\n⚠️ <i>Type /cancel to cancel.</i>`;
+    const msg = `RAJ CODER FF\nBAN LOGIN\n\nACCESS TOKEN CAN BE USED TO LOGIN TO YOUR BANNED GAME ACCOUNT AND CHECK YOUR GAME PROFILE.\n\nPLEASE SEND YOUR <b>ACCESS TOKEN</b> TO CREATE A NEW SESSION.\n\n📝 <b>Send your access token below:</b>\n\n⚠️ <i>Type /cancel to cancel.</i>`;
 
     const inlineKb = Markup.inlineKeyboard([
         [Markup.button.url("PLAY GAME WITH PC LOGO ↗", linkPlayPc)],
@@ -245,14 +245,14 @@ async function handleStopSessionRequest(ctx) {
 
     const session = getSession(ctx.from.id);
     if (!session) {
-        return ctx.reply("WANTED\nSTOP SESSION\n\n⚠️ <b>No active session found to stop.</b>", {
+        return ctx.reply("RAJ CODER FF\nSTOP SESSION\n\n⚠️ <b>No active session found to stop.</b>", {
             parse_mode: "HTML",
             reply_markup: getMainKeyboard().reply_markup
         });
     }
 
     deleteSession(ctx.from.id);
-    return ctx.reply("WANTED\nSTOP SESSION\n\n✅ <b>Your active session has been stopped and cleared successfully.</b>", {
+    return ctx.reply("RAJ CODER FF\nSTOP SESSION\n\n✅ <b>Your active session has been stopped and cleared successfully.</b>", {
         parse_mode: "HTML",
         reply_markup: getMainKeyboard().reply_markup
     });
@@ -265,13 +265,13 @@ async function handleSessionStatusRequest(ctx) {
 
     const session = getSession(ctx.from.id);
     if (!session) {
-        return ctx.reply("WANTED\nSESSION STATUS\n\n❌ <b>No Active Session Found.</b>\n\nUse <b>BAN LOGIN</b> to create a new session.", {
+        return ctx.reply("RAJ CODER FF\nSESSION STATUS\n\n❌ <b>No Active Session Found.</b>\n\nUse <b>BAN LOGIN</b> to create a new session.", {
             parse_mode: "HTML",
             reply_markup: getMainKeyboard().reply_markup
         });
     }
 
-    const msg = `WANTED\nSESSION STATUS\n\n✅ <b>Active Session Details:</b>\n• <b>Session ID:</b> <code>${session.sessionId}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Created At:</b> <code>${session.created_formatted}</code>\n• <b>Server URL:</b> <code>${session.serverLoginUrl}</code>\n\n<i>To stop this session, tap STOP SESSION below.</i>`;
+    const msg = `RAJ CODER FF\nSESSION STATUS\n\n✅ <b>Active Session Details:</b>\n• <b>Session ID:</b> <code>${session.sessionId}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Created At:</b> <code>${session.created_formatted}</code>\n• <b>Server URL:</b> <code>${session.serverLoginUrl}</code>\n\n<i>To stop this session, tap STOP SESSION below.</i>`;
 
     return ctx.reply(msg, {
         parse_mode: "HTML",
@@ -286,13 +286,13 @@ async function handleAboutThisBotRequest(ctx) {
 
     const session = getSession(ctx.from.id);
     if (!session) {
-        return ctx.reply("WANTED\nABOUT THIS BOT\n\n<b>INVALID TOKEN</b>", {
+        return ctx.reply("RAJ CODER FF\nABOUT THIS BOT\n\n<b>INVALID TOKEN</b>", {
             parse_mode: "HTML",
             reply_markup: getMainKeyboard().reply_markup
         });
     }
 
-    const msg = `WANTED\nABOUT THIS BOT\n\n✅ <b>ACTIVE SESSION TOKEN:</b>\n• <b>Session ID:</b> <code>${session.sessionId}</code>\n• <b>Server Login URL:</b> <code>${session.serverLoginUrl}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Created At:</b> <code>${session.created_formatted}</code>`;
+    const msg = `RAJ CODER FF\nABOUT THIS BOT\n\n✅ <b>ACTIVE SESSION TOKEN:</b>\n• <b>Session ID:</b> <code>${session.sessionId}</code>\n• <b>Server Login URL:</b> <code>${session.serverLoginUrl}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Created At:</b> <code>${session.created_formatted}</code>`;
 
     return ctx.reply(msg, {
         parse_mode: "HTML",
@@ -325,13 +325,13 @@ async function handleAddBalanceMenu(ctx) {
     const bal = getUserBalance(user.id);
 
     const msg = `
-💳 <b>WALLET TOP-UP (वॉलेट रीचार्ज)</b>
+💳 <b>ᴡᴀʟʟᴇᴛ ᴛᴏᴘ-ᴜᴘ</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-💼 <b>Current Balance (वर्तमान बैलेंस):</b> <b>₹${bal.toFixed(2)}</b>
+💼 <b>ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ:</b> <b>₹${bal.toFixed(2)}</b>
 
-बॉट वॉलेट में पैसे जोड़ने से आप बिना बार-बार QR स्कैन किए <b>1-Click में तुरंत</b> किसी भी ID को Unban कर सकते हैं!
+ᴀᴅᴅ ᴍᴏɴᴇʏ ᴛᴏ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ ғᴏʀ ɪɴsᴛᴀɴᴛ 1-ᴄʟɪᴄᴋ ᴜɴʙᴀɴ ᴘᴀʏᴍᴇɴᴛs!
 
-👇 <b>पैसे जोड़ने के लिए नीचे दिए गए विकल्प चुनें:</b>
+👇 <b>sᴇʟᴇᴄᴛ ᴀɴ ᴀᴍᴏᴜɴᴛ ʙᴇʟᴏᴡ:</b>
 `;
     const kb = Markup.inlineKeyboard([
         [
@@ -344,10 +344,10 @@ async function handleAddBalanceMenu(ctx) {
             Markup.button.callback("⚡ ₹1000", "topup_amt_1000")
         ],
         [
-            Markup.button.callback("✏️ Enter Custom Amount (अन्य राशि)", "topup_amt_custom")
+            Markup.button.callback("✏️ ᴇɴᴛᴇʀ ᴄᴜsᴛᴏᴍ ᴀᴍᴏᴜɴᴛ", "topup_amt_custom")
         ],
         [
-            Markup.button.callback("❌ Cancel", "cancel_action")
+            Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")
         ]
     ]);
 
@@ -371,7 +371,7 @@ bot.action(/^topup_amt_(\d+)$/, async (ctx) => {
 bot.action("topup_amt_custom", async (ctx) => {
     await ctx.answerCbQuery();
     userStates.set(ctx.from.id, { mode: "WALLET_CUSTOM_AMOUNT" });
-    return ctx.reply("✏️ <b>कृपया वॉलेट में जोड़ने की राशि दर्ज करें (कम से कम ₹10):</b>\n\n*Example:* <code>150</code> या <code>350</code>", {
+    return ctx.reply("✏️ <b>ᴘʟᴇᴀsᴇ ᴇɴᴛᴇʀ ᴀᴍᴏᴜɴᴛ ᴛᴏ ᴀᴅᴅ (ᴍɪɴɪᴍᴜᴍ ₹10):</b>\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>150</code> ᴏʀ <code>350</code>", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([[Markup.button.callback("❌ Cancel", "cancel_action")]]).reply_markup
     });
@@ -379,7 +379,7 @@ bot.action("topup_amt_custom", async (ctx) => {
 
 async function generateWalletTopupQr(ctx, amount) {
     if (isNaN(amount) || amount < 10) {
-        return ctx.reply("❌ राशि कम से कम ₹10 होनी चाहिए!");
+        return ctx.reply("❌ ᴀᴍᴏᴜɴᴛ ᴍᴜsᴛ ʙᴇ ᴀᴛ ʟᴇᴀsᴛ ₹10!");
     }
 
     try { await ctx.sendChatAction("upload_photo"); } catch { }
@@ -399,31 +399,31 @@ async function generateWalletTopupQr(ctx, amount) {
         purpose: "wallet"
     });
 
-    const upiId = gw.paytm.upi_id || "wantedmod52@paytm";
+    const upiId = gw.paytm.upi_id || "rajcoderff@paytm";
     const merchantName = gw.paytm.merchant_name || "FREE FIRE UNBAN SERVICES";
     const upiUri = makeUpiUri(upiId, merchantName, amount, order.id);
 
     const caption = `
 ━━━━━━━━━━━━━━━━━━━━━━━
-  💳 <b>PAYTM WALLET TOP-UP (वॉलेट रीचार्ज)</b>
+  💳 <b>ᴘᴀʏᴛᴍ ᴡᴀʟʟᴇᴛ ᴛᴏᴘ-ᴜᴘ</b>
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-💰 <b>Top-up Amount (जोड़ने की राशि):</b> <b>₹${amount}</b>
+💰 <b>ᴛᴏᴘ-ᴜᴘ ᴀᴍᴏᴜɴᴛ:</b> <b>₹${amount}</b>
 🔐 <b>Order Reference:</b> <code>${order.id}</code>
 💳 <b>Payee UPI VPA:</b> <code>${upiId}</code>
 ⏱️ <b>Validity:</b> 15 Minutes
 
 ━━━━━━━━━━━━━━━━━━━━━━━
-📝 <b>Payment Instructions (निर्देश):</b>
-1️⃣ <b>Paytm, Google Pay, PhonePe</b> या किसी भी UPI ऐप से यह QR स्कैन करें।
-2️⃣ <b>ठीक ₹${amount}</b> का भुगतान करें।
-3️⃣ भुगतान के तुरंत बाद नीचे <b>[🔄 Verify Top-up]</b> दबाएं।
+📝 <b>ᴘᴀʏᴍᴇɴᴛ ɪɴsᴛʀᴜᴄᴛɪᴏɴs:</b>
+1️⃣ sᴄᴀɴ ᴛʜɪs ǫʀ ᴜsɪɴɢ <b>ᴘᴀʏᴛᴍ, ɢᴏᴏɢʟᴇ ᴘᴀʏ, ᴘʜᴏɴᴇᴘᴇ</b> ᴏʀ ᴀɴʏ ᴜᴘɪ ᴀᴘᴘ.
+2️⃣ ᴘᴀʏ <b>ᴇxᴀᴄᴛʟʏ ₹${amount}</b>.
+3️⃣ ᴀғᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ, ᴛᴀᴘ <b>[🔄 ᴠᴇʀɪғʏ ᴛᴏᴘ-ᴜᴘ]</b> ʙᴇʟᴏᴡ.
 
-⚡ <b>Auto-Verify:</b> भुगतान पुष्टि होते ही पैसे तुरंत आपके वॉलेट में जुड़ जाएंगे!
+⚡ <b>ᴀᴜᴛᴏ-ᴠᴇʀɪғʏ:</b> ᴍᴏɴᴇʏ ᴡɪʟʟ ʙᴇ ᴀᴅᴅᴇᴅ ɪɴsᴛᴀɴᴛʟʏ ᴛᴏ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ!
 `;
 
     const markup = Markup.inlineKeyboard([
-        [Markup.button.callback("🔄 Verify Top-up (भुगतान जांचें)", `check_pay_${order.id}`)],
+        [Markup.button.callback("🔄 ᴠᴇʀɪғʏ ᴛᴏᴘ-ᴜᴘ", `check_pay_${order.id}`)],
         [Markup.button.callback("❌ Cancel", `cancel_pay_${order.id}`)]
     ]).reply_markup;
 
@@ -435,7 +435,7 @@ bot.command("regions", async (ctx) => {
     const regions = Object.entries(REGION_MAP)
         .map(([code, label]) => `• <code>${code.toUpperCase()}</code> → ${label}`)
         .join("\n");
-    ctx.reply(`🌍 <b>Supported Server Regions (सर्वर क्षेत्र):</b>\n\n${regions}\n\n📌 <b>Example:</b> <code>/get 2540951574 ind</code>`, {
+    ctx.reply(`🌍 <b>sᴜᴘᴘᴏʀᴛᴇᴅ sᴇʀᴠᴇʀ ʀᴇɢɪᴏɴs:</b>\n\n${regions}\n\n📌 <b>ᴇxᴀᴍᴘʟᴇ:</b> <code>/get 2540951574 ind</code>`, {
         parse_mode: "HTML",
     });
 });
@@ -449,7 +449,7 @@ bot.command("get", async (ctx) => {
     const args = parts.slice(1);
 
     if (args.length < 1) {
-        return ctx.reply("❌ <b>उपयोग निर्देश / Usage:</b> <code>/get &lt;uid&gt; [region]</code>\n\n*Example:* <code>/get 2540951574</code>", {
+        return ctx.reply("❌ <b>ᴜsᴀɢᴇ:</b> <code>/get &lt;uid&gt; [region]</code>\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>/get 2540951574</code>", {
             parse_mode: "HTML",
             reply_to_message_id: ctx.message.message_id,
         });
@@ -466,7 +466,7 @@ bot.command("get", async (ctx) => {
 bot.action("cancel_action", async (ctx) => {
     userStates.delete(ctx.from.id);
     await ctx.answerCbQuery("Cancelled");
-    await ctx.reply("❌ <b>Action रद्द कर दिया गया है।</b>", {
+    await ctx.reply("❌ <b>ᴀᴄᴛɪᴏɴ ᴄᴀɴᴄᴇʟʟᴇᴅ.</b>", {
         parse_mode: "HTML",
         reply_markup: getMainKeyboard().reply_markup
     });
@@ -479,14 +479,14 @@ bot.action(/^unban_yes_(.+)$/, async (ctx) => {
     const prices = getPricing();
 
     const noteMsg = `
-⚠️ <b>ज़रूरी सूचना / IMPORTANT NOTICE:</b>
+⚠️ <b>ɪᴍᴘᴏʀᴛᴀɴᴛ ɴᴏᴛɪᴄᴇ:</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-📌 <b>Payment complete होने के तुरंत बाद</b> Unban Process शुरू हो जाता है।
-⚠️ <b>ध्यान दें (PLEASE NOTE):</b> Payment के बाद लगभग <b>30 से 40 मिनट तक</b> अपनी Free Fire ID को <b>Login न करें!</b>
-❌ <b>अन्यथा Unban Process Fail हो जाएगा</b> और ID रिकवर नहीं होगी।
+📌 <b>ᴜɴʙᴀɴ ᴘʀᴏᴄᴇss sᴛᴀʀᴛs ɪᴍᴍᴇᴅɪᴀᴛᴇʟʏ</b> ᴀғᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ ᴄᴏᴍᴘʟᴇᴛɪᴏɴ.
+⚠️ <b>ᴘʟᴇᴀsᴇ ɴᴏᴛᴇ:</b> ᴅᴏ ɴᴏᴛ ʟᴏɢɪɴ ᴛᴏ ʏᴏᴜʀ ғʀᴇᴇ ғɪʀᴇ ɪᴅ ғᴏʀ <b>30 ᴛᴏ 40 ᴍɪɴᴜᴛᴇs</b> ᴀғᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ!
+❌ <b>ᴏᴛʜᴇʀᴡɪsᴇ ᴜɴʙᴀɴ ᴘʀᴏᴄᴇss ᴡɪʟʟ ғᴀɪʟ</b> ᴀɴᴅ ᴀᴄᴄᴏᴜɴᴛ ᴡᴏɴ'ᴛ ʙᴇ ʀᴇᴄᴏᴠᴇʀᴇᴅ.
 ━━━━━━━━━━━━━━━━━━━━━━
 
-❓ <b>आपका Account कितने दिनों के लिए Ban है? सही विकल्प (Option) चुनें, नहीं तो Unban Process Fail हो जाएगा:</b>
+❓ <b>ʜᴏᴡ ʟᴏɴɢ ɪs ʏᴏᴜʀ ᴀᴄᴄᴏᴜɴᴛ ʙᴀɴɴᴇᴅ ғᴏʀ? sᴇʟᴇᴄᴛ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ᴏᴘᴛɪᴏɴ ᴏᴛʜᴇʀᴡɪsᴇ ᴜɴʙᴀɴ ᴡɪʟʟ ғᴀɪʟ:</b>
 `;
 
     const buttonRows = [];
@@ -518,7 +518,7 @@ bot.action(/^pkg_(.+)_(.+)$/, async (ctx) => {
     // If user has enough wallet balance, offer 1-click Wallet Pay!
     if (userBal >= pkg.price) {
         const askMsg = `
-📋 <b>चयनित पैकेज / SELECTED PACKAGE:</b>
+📋 <b>sᴇʟᴇᴄᴛᴇᴅ ᴘᴀᴄᴋᴀɢᴇ:</b>
 ━━━━━━━━━━━━━━━━━━━━━━
 🆔 <b>Free Fire UID:</b> <code>${ffUid}</code>
 🛡️ <b>Ban Category:</b> <b>${pkg.label}</b>
@@ -526,13 +526,13 @@ bot.action(/^pkg_(.+)_(.+)$/, async (ctx) => {
 💼 <b>Your Wallet Balance:</b> <b>₹${userBal.toFixed(2)}</b>
 ━━━━━━━━━━━━━━━━━━━━━━
 
-⚡ <b>आपके पास पर्याप्त वॉलेट बैलेंस उपलब्ध है!</b>
-आप सीधे Wallet से तुरंत भुगतान कर सकते हैं या Paytm QR कोड स्कैन करके:
+⚡ <b>ʏᴏᴜ ʜᴀᴠᴇ sᴜғғɪᴄɪᴇɴᴛ ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ!</b>
+ʏᴏᴜ ᴄᴀɴ ᴘᴀʏ ɪɴsᴛᴀɴᴛʟʏ ғʀᴏᴍ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ ᴏʀ sᴄᴀɴ ᴘᴀʏᴛᴍ ǫʀ ᴄᴏᴅᴇ:
 `;
         return ctx.reply(askMsg, {
             parse_mode: "HTML",
             reply_markup: Markup.inlineKeyboard([
-                [Markup.button.callback(`⚡ Pay from Wallet (तुरंत Unban ₹${pkg.price})`, `pay_wallet_${pkgKey}_${ffUid}`)],
+                [Markup.button.callback(`⚡ ᴘᴀʏ ғʀᴏᴍ ᴡᴀʟʟᴇᴛ (ɪɴsᴛᴀɴᴛ ᴜɴʙᴀɴ ₹${pkg.price})`, `pay_wallet_${pkgKey}_${ffUid}`)],
                 [Markup.button.callback(`💳 Pay via Paytm QR Code (₹${pkg.price})`, `pay_qr_${pkgKey}_${ffUid}`)],
                 [Markup.button.callback("❌ Cancel", "cancel_action")]
             ]).reply_markup
@@ -554,7 +554,7 @@ bot.action(/^pay_wallet_(.+)_(.+)$/, async (ctx) => {
 
     const remainingBal = deductBalance(user.id, pkg.price);
     if (remainingBal === false) {
-        return ctx.reply("❌ आपके वॉलेट में पर्याप्त बैलेंस नहीं है। कृपया QR Code से भुगतान करें।", {
+        return ctx.reply("❌ ɪɴsᴜғғɪᴄɪᴇɴᴛ ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ. ᴘʟᴇᴀsᴇ ᴘᴀʏ ᴠɪᴀ ǫʀ ᴄᴏᴅᴇ.", {
             reply_markup: Markup.inlineKeyboard([[Markup.button.callback("💳 Pay via Paytm QR", `pay_qr_${pkgKey}_${ffUid}`)]]).reply_markup
         });
     }
@@ -572,7 +572,7 @@ bot.action(/^pay_wallet_(.+)_(.+)$/, async (ctx) => {
     });
 
     await handleSuccessfulPayment(ctx.telegram, order, "WALLET_BALANCE");
-    return ctx.reply(`✅ <b>₹${pkg.price} आपके वॉलेट से काट लिए गए हैं!</b>\n💼 शेष वॉलेट बैलेंस: <b>₹${remainingBal.toFixed(2)}</b>\n\n🎉 Unban प्रक्रिया शुरू हो चुकी है!`, {
+    return ctx.reply(`✅ <b>₹${pkg.price} ᴅᴇᴅᴜᴄᴛᴇᴅ ғʀᴏᴍ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ!</b>\n💼 ʀᴇᴍᴀɪɴɪɴɢ ʙᴀʟᴀɴᴄᴇ: <b>₹${remainingBal.toFixed(2)}</b>\n\n🎉 ᴜɴʙᴀɴ ᴘʀᴏᴄᴇss ʜᴀs ʙᴇᴇɴ sᴛᴀʀᴛᴇᴅ!`, {
         parse_mode: "HTML"
     });
 });
@@ -603,36 +603,36 @@ async function generateUnbanQrPayment(ctx, pkgKey, ffUid, pkg) {
         purpose: "unban"
     });
 
-    const upiId = gw.paytm.upi_id || "wantedmod52@paytm";
+    const upiId = gw.paytm.upi_id || "rajcoderff@paytm";
     const merchantName = gw.paytm.merchant_name || "FREE FIRE UNBAN SERVICES";
     const upiUri = makeUpiUri(upiId, merchantName, pkg.price, order.id);
 
     const caption = `
 ━━━━━━━━━━━━━━━━━━━━━━━
-  💳 <b>PAYTM SECURE PAYMENT (सुरक्षित भुगतान)</b>
+  💳 <b>ᴘᴀʏᴛᴍ sᴇᴄᴜʀᴇ ᴘᴀʏᴍᴇɴᴛ</b>
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-💰 <b>Amount Payable (कुल राशि):</b> <b>₹${pkg.price}</b>
+💰 <b>ᴀᴍᴏᴜɴᴛ ᴘᴀʏᴀʙʟᴇ:</b> <b>₹${pkg.price}</b>
 🆔 <b>Free Fire UID:</b> <code>${ffUid}</code>
-🛡️ <b>Ban Category (पैकेज):</b> <b>${pkg.label}</b>
+🛡️ <b>ʙᴀɴ ᴄᴀᴛᴇɢᴏʀʏ:</b> <b>${pkg.label}</b>
 🔐 <b>Order Reference:</b> <code>${order.id}</code>
 💳 <b>Payee UPI VPA:</b> <code>${upiId}</code>
 ⏱️ <b>Validity:</b> 15 Minutes
 
 ━━━━━━━━━━━━━━━━━━━━━━━
-📝 <b>Payment Instructions (भुगतान निर्देश):</b>
-1️⃣ <b>Paytm, Google Pay, PhonePe, BHIM</b> या किसी भी UPI ऐप से ऊपर का QR Code स्कैन करें।
-2️⃣ <b>ठीक ₹${pkg.price}</b> का भुगतान करें (कम या ज्यादा न करें)।
-3️⃣ Remarks/Note में कोई बदलाव न करें।
-4️⃣ भुगतान के बाद नीचे <b>[🔄 Verify Payment]</b> पर टैप करें।
+📝 <b>ᴘᴀʏᴍᴇɴᴛ ɪɴsᴛʀᴜᴄᴛɪᴏɴs:</b>
+1️⃣ sᴄᴀɴ ᴛʜᴇ ǫʀ ᴄᴏᴅᴇ ᴜsɪɴɢ <b>ᴘᴀʏᴛᴍ, ɢᴏᴏɢʟᴇ ᴘᴀʏ, ᴘʜᴏɴᴇᴘᴇ</b> ᴏʀ ᴀɴʏ ᴜᴘɪ ᴀᴘᴘ.
+2️⃣ ᴘᴀʏ <b>ᴇxᴀᴄᴛʟʏ ₹${pkg.price}</b>.
+3️⃣ ᴅᴏ ɴᴏᴛ ᴄʜᴀɴɢᴇ ʀᴇᴍᴀʀᴋs ᴏʀ ɴᴏᴛᴇ.
+4️⃣ ᴀғᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ, ᴛᴀᴘ <b>[🔄 ᴠᴇʀɪғʏ ᴘᴀʏᴍᴇɴᴛ]</b> ʙᴇʟᴏᴡ.
 
 ⚡ <b>Automated Verification:</b>
-Payment होते ही Unban प्रक्रिया बैकएंड में शुरू हो जाएगी!
+ᴜɴʙᴀɴ ᴘʀᴏᴄᴇss ᴡɪʟʟ sᴛᴀʀᴛ ɪᴍᴍᴇᴅɪᴀᴛᴇʟʏ ᴀғᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ!
 `;
 
     const markup = Markup.inlineKeyboard([
-        [Markup.button.callback("🔄 Verify Payment (भुगतान जांचें)", `check_pay_${order.id}`)],
-        [Markup.button.callback("❌ Cancel Order (रद्द करें)", `cancel_pay_${order.id}`)]
+        [Markup.button.callback("🔄 ᴠᴇʀɪғʏ ᴘᴀʏᴍᴇɴᴛ", `check_pay_${order.id}`)],
+        [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ ᴏʀᴅᴇʀ", `cancel_pay_${order.id}`)]
     ]).reply_markup;
 
     return await sendQrPhoto(ctx, upiUri, caption, markup);
@@ -644,34 +644,34 @@ bot.action(/^check_pay_(.+)$/, async (ctx) => {
     const order = getOrder(orderId);
 
     if (!order) {
-        return ctx.answerCbQuery("❌ Order नहीं मिला!", { show_alert: true });
+        return ctx.answerCbQuery("❌ ᴏʀᴅᴇʀ ɴᴏᴛ ғᴏᴜɴᴅ!", { show_alert: true });
     }
 
     if (order.status === "PAID") {
-        return ctx.answerCbQuery("✅ यह Payment पहले ही Verify हो चुका है!", { show_alert: true });
+        return ctx.answerCbQuery("✅ ᴛʜɪs ᴘᴀʏᴍᴇɴᴛ ɪs ᴀʟʀᴇᴀᴅʏ ᴠᴇʀɪғɪᴇᴅ!", { show_alert: true });
     }
 
-    await ctx.answerCbQuery("🔍 Paytm सर्वर से Payment स्टेटस चेक किया जा रहा है...");
+    await ctx.answerCbQuery("🔍 ᴄʜᴇᴄᴋɪɴɢ ᴘᴀʏᴍᴇɴᴛ sᴛᴀᴛᴜs ғʀᴏᴍ ᴘᴀʏᴛᴍ...");
 
     const gw = getGateway();
     if (gw.paytm.mid && gw.paytm.merchant_key) {
         const result = await verifyPaytmStatus(gw.paytm.mid, gw.paytm.merchant_key, orderId);
         if (result.success) {
             await handleSuccessfulPayment(ctx.telegram, order, result.txnId);
-            return ctx.reply(`🎉 <b>Payment Verified Successfully!</b>\n\n🆔 Order ID: <code>${orderId}</code>\n💰 Amount: <b>₹${order.amount}</b>\n\n✅ आपका अनुरोध Process में है!`, {
+            return ctx.reply(`🎉 <b>Payment Verified Successfully!</b>\n\n🆔 Order ID: <code>${orderId}</code>\n💰 Amount: <b>₹${order.amount}</b>\n\n✅ ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ɪs ʙᴇɪɴɢ ᴘʀᴏᴄᴇssᴇᴅ!`, {
                 parse_mode: "HTML"
             });
         } else if (result.pending) {
-            return ctx.reply(`⏳ <b>Payment अभी Pending है!</b>\n\nअगर आपने भुगतान कर दिया है तो बैंक/UPI सेटलमेंट में 10 से 30 सेकंड का समय लग सकता है।\nकृपया 15 सेकंड बाद पुनः <b>[🔄 Verify Payment]</b> दबाएं।`, {
+            return ctx.reply(`⏳ <b>ᴘᴀʏᴍᴇɴᴛ ɪs sᴛɪʟʟ ᴘᴇɴᴅɪɴɢ!</b>\n\nɪғ ʏᴏᴜ ʜᴀᴠᴇ ᴘᴀɪᴅ, ʙᴀɴᴋ sᴇᴛᴛʟᴇᴍᴇɴᴛ ᴍᴀʏ ᴛᴀᴋᴇ 10-30 sᴇᴄᴏɴᴅs.\nᴘʟᴇᴀsᴇ ᴛᴀᴘ <b>[🔄 ᴠᴇʀɪғʏ ᴘᴀʏᴍᴇɴᴛ]</b> ᴀɢᴀɪɴ ᴀғᴛᴇʀ 15 sᴇᴄᴏɴᴅs.`, {
                 parse_mode: "HTML"
             });
         } else {
-            return ctx.reply(`⚠️ <b>Payment पुष्टि नहीं हो पाई!</b>\n\nस्टेटस: <code>${result.status || "NOT_RECEIVED"}</code>\nयदि पैसे कट गए हैं, तो कृपया कुछ देर इंतज़ार करें या Admin से संपर्क करें।`, {
+            return ctx.reply(`⚠️ <b>ᴘᴀʏᴍᴇɴᴛ ɴᴏᴛ ᴄᴏɴғɪʀᴍᴇᴅ!</b>\n\nsᴛᴀᴛᴜs: <code>${result.status || "NOT_RECEIVED"}</code>\nɪғ ᴍᴏɴᴇʏ ᴡᴀs ᴅᴇᴅᴜᴄᴛᴇᴅ, ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ ᴏʀ ᴄᴏɴᴛᴀᴄᴛ ᴀᴅᴍɪɴ.`, {
                 parse_mode: "HTML"
             });
         }
     } else {
-        return ctx.reply(`⏳ <b>Payment Verification In Progress...</b>\n\n🆔 Order: <code>${orderId}</code>\n💰 Amount: <b>₹${order.amount}</b>\n\nPayment पुष्टि होते ही आपका वॉलेट/ऑर्डर अपडेट हो जाएगा।`, {
+        return ctx.reply(`⏳ <b>ᴘᴀʏᴍᴇɴᴛ ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ ɪɴ ᴘʀᴏɢʀᴇss...</b>\n\n🆔 ᴏʀᴅᴇʀ: <code>${orderId}</code>\n💰 ᴀᴍᴏᴜɴᴛ: <b>₹${order.amount}</b>\n\nʏᴏᴜʀ ᴏʀᴅᴇʀ ᴡɪʟʟ ʙᴇ ᴜᴘᴅᴀᴛᴇᴅ ᴜᴘᴏɴ ᴄᴏɴғɪʀᴍᴀᴛɪᴏɴ.`, {
             parse_mode: "HTML"
         });
     }
@@ -683,7 +683,7 @@ bot.action(/^cancel_pay_(.+)$/, async (ctx) => {
     updateOrderStatus(orderId, "CANCELLED");
     await ctx.answerCbQuery("Order Cancelled");
     try { await ctx.deleteMessage(); } catch { }
-    await ctx.reply(`❌ <b>Order #${orderId} रद्द कर दिया गया है।</b>`, {
+    await ctx.reply(`❌ <b>ᴏʀᴅᴇʀ #${orderId} ᴄᴀɴᴄᴇʟʟᴇᴅ.</b>`, {
         parse_mode: "HTML"
     });
 });
@@ -702,13 +702,13 @@ async function handleSuccessfulPayment(telegram, order, txnId = "") {
 
         // 1. Notify Customer
         try {
-            const supportLink = settings.support_link || "https://t.me/wantedmod52";
+            const supportLink = settings.support_link || "https://t.me/RajCoderFf";
             const userMsg = `
 ━━━━━━━━━━━━━━━━━━━━━━━
-  🎉 <b>WALLET TOP-UP SUCCESSFUL / रीचार्ज सफल!</b>
+  🎉 <b>ᴡᴀʟʟᴇᴛ ᴛᴏᴘ-ᴜᴘ sᴜᴄᴄᴇssғᴜʟ!</b>
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-✅ <b>आपके वॉलेट में पैसे सफलतापूर्वक जुड़ गए हैं!</b>
+✅ <b>ᴍᴏɴᴇʏ ʜᴀs ʙᴇᴇɴ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʀᴇᴅɪᴛᴇᴅ ᴛᴏ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ!</b>
 
 💰 <b>Amount Credited:</b> <b>₹${order.amount}</b>
 💼 <b>Updated Wallet Balance:</b> <b>₹${newBal.toFixed(2)}</b>
@@ -716,14 +716,14 @@ async function handleSuccessfulPayment(telegram, order, txnId = "") {
 ⏱️ <b>Date & Time:</b> <code>${updatedOrder?.paid_formatted}</code>
 
 ━━━━━━━━━━━━━━━━━━━━━━━
-⚡ <i>अब आप इस बैलेंस से किसी भी Free Fire ID को तुरंत Unban कर सकते हैं!</i>
+⚡ <i>ʏᴏᴜ ᴄᴀɴ ɴᴏᴡ ᴜsᴇ ᴛʜɪs ʙᴀʟᴀɴᴄᴇ ᴛᴏ ɪɴsᴛᴀɴᴛʟʏ ᴜɴʙᴀɴ ᴀɴʏ ғʀᴇᴇ ғɪʀᴇ ɪᴅ!</i>
 
-💬 <b>यदि कोई सहायता चाहिए, तो नीचे Support बटन पर टैप करें:</b>
+💬 <b>ɪғ ʏᴏᴜ ɴᴇᴇᴅ ᴀssɪsᴛᴀɴᴄᴇ, ᴛᴀᴘ sᴜᴘᴘᴏʀᴛ ʙᴇʟᴏᴡ:</b>
 `;
             await telegram.sendMessage(order.user_id, userMsg, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([
-                    [Markup.button.url("💬 Support से बात करें (Contact Support)", supportLink)]
+                    [Markup.button.url("💬 ᴄᴏɴᴛᴀᴄᴛ sᴜᴘᴘᴏʀᴛ", supportLink)]
                 ]).reply_markup
             });
         } catch (err) { }
@@ -754,13 +754,13 @@ ${txnId ? `🔖 <b>Txn ID:</b> <code>${txnId}</code>\n` : ""}⏱️ <b>Payment T
         // ─── FF ID Unban Flow ────────────────────────────────────────────────
         // 1. Notify Customer
         try {
-            const supportLink = settings.support_link || "https://t.me/wantedmod52";
+            const supportLink = settings.support_link || "https://t.me/RajCoderFf";
             const userMsg = `
 ━━━━━━━━━━━━━━━━━━━━━━━
-  🎉 <b>PAYMENT CONFIRMED & VERIFIED!</b>
+  🎉 <b>ᴘᴀʏᴍᴇɴᴛ ᴄᴏɴғɪʀᴍᴇᴅ & ᴠᴇʀɪғɪᴇᴅ!</b>
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-✅ <b>आपका भुगतान सफलतापूर्वक प्राप्त हो गया है!</b>
+✅ <b>ʏᴏᴜʀ ᴘᴀʏᴍᴇɴᴛ ʜᴀs ʙᴇᴇɴ sᴜᴄᴄᴇssғᴜʟʟʏ ʀᴇᴄᴇɪᴠᴇᴅ!</b>
 
 🆔 <b>Free Fire UID:</b> <code>${order.ff_uid}</code>
 🛡️ <b>Package:</b> <b>${order.package_label}</b>
@@ -769,18 +769,18 @@ ${txnId ? `🔖 <b>Txn ID:</b> <code>${txnId}</code>\n` : ""}⏱️ <b>Payment T
 ⏱️ <b>Date & Time:</b> <code>${updatedOrder?.paid_formatted}</code>
 
 ━━━━━━━━━━━━━━━━━━━━━━━
-⚠️ <b>अति आवश्यक सूचना / CRITICAL NOTICE:</b>
-📌 Unban Process बैकएंड में शुरू हो चुका है।
-🚫 <b>अगले 30 से 40 मिनट तक अपनी Free Fire ID को बिल्कुल भी Login न करें!</b>
-❌ यदि आपने बीच में Login किया तो Unban Process निरस्त (Fail) हो जाएगा।
+⚠️ <b>ᴄʀɪᴛɪᴄᴀʟ ɴᴏᴛɪᴄᴇ:</b>
+📌 ᴜɴʙᴀɴ ᴘʀᴏᴄᴇss ʜᴀs ʙᴇᴇɴ sᴛᴀʀᴛᴇᴅ ɪɴ ʙᴀᴄᴋᴇɴᴅ.
+🚫 <b>ᴅᴏ ɴᴏᴛ ʟᴏɢɪɴ ᴛᴏ ʏᴏᴜʀ ғʀᴇᴇ ғɪʀᴇ ɪᴅ ғᴏʀ ᴛʜᴇ ɴᴇxᴛ 30 ᴛᴏ 40 ᴍɪɴᴜᴛᴇs!</b>
+❌ ɪғ ʏᴏᴜ ʟᴏɢɪɴ ɪɴ ʙᴇᴛᴡᴇᴇɴ, ᴛʜᴇ ᴜɴʙᴀɴ ᴘʀᴏᴄᴇss ᴡɪʟʟ ғᴀɪʟ.
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-💬 <b>यदि कोई समस्या या सहायता चाहिए, तो नीचे दिए गए बटन पर टैप करके Support से बात करें:</b>
+💬 <b>ɪғ ʏᴏᴜ ғᴀᴄᴇ ᴀɴʏ ɪssᴜᴇs, ᴄᴏɴᴛᴀᴄᴛ sᴜᴘᴘᴏʀᴛ ʙᴇʟᴏᴡ:</b>
 `;
             await telegram.sendMessage(order.user_id, userMsg, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([
-                    [Markup.button.url("💬 Support से बात करें (Contact Support)", supportLink)]
+                    [Markup.button.url("💬 ᴄᴏɴᴛᴀᴄᴛ sᴜᴘᴘᴏʀᴛ", supportLink)]
                 ]).reply_markup
             });
         } catch (err) { }
@@ -835,7 +835,7 @@ setInterval(async () => {
 // ─── Helper: Execute Full Info Query (With Clean Loading Indicator) ──────────
 async function executeFullInfoQuery(ctx, uid, region = "IND") {
     if (!/^\d{5,15}$/.test(uid)) {
-        return ctx.reply("❌ <b>Invalid UID!</b>\nUID केवल अंकों (5-15 Digits) में होनी चाहिए।\n\n<i>(उदाहरण: <code>2540951574</code>)</i>", {
+        return ctx.reply("❌ <b>ɪɴᴠᴀʟɪᴅ ᴜɪᴅ!</b>\nᴜɪᴅ ᴍᴜsᴛ ʙᴇ 5-15 ᴅɪɢɪᴛs ᴏɴʟʏ.\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>2540951574</code>)</i>", {
             parse_mode: "HTML",
         });
     }
@@ -844,7 +844,7 @@ async function executeFullInfoQuery(ctx, uid, region = "IND") {
 
     try { await ctx.sendChatAction("typing"); } catch { }
 
-    const loadingMsg = await ctx.reply(`⏳ <b>Loading... डेटा लोड किया जा रहा है</b>\n\n🆔 <b>UID:</b> <code>${uid}</code>\n🌍 <b>Server:</b> <code>${region}</code>\n\n🔍 Server से Player Data फेच हो रहा है, कृपया थोड़ा इंतज़ार करें...`, {
+    const loadingMsg = await ctx.reply(`⏳ <b>ʟᴏᴀᴅɪɴɢ ᴘʟᴀʏᴇʀ ᴅᴇᴛᴀɪʟs...</b>\n\n🆔 <b>ᴜɪᴅ:</b> <code>${uid}</code>\n🌍 <b>sᴇʀᴠᴇʀ:</b> <code>${region}</code>\n\n🔍 ғᴇᴛᴄʜɪɴɢ ᴘʟᴀʏᴇʀ ᴅᴀᴛᴀ ғʀᴏᴍ sᴇʀᴠᴇʀ, ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ...`, {
         parse_mode: "HTML",
     });
 
@@ -853,7 +853,7 @@ async function executeFullInfoQuery(ctx, uid, region = "IND") {
         try { await ctx.telegram.deleteMessage(ctx.chat.id, loadingMsg.message_id); } catch { }
 
         if (!result.success) {
-            return ctx.reply(`❌ <b>Failed to Fetch Info / डेटा नहीं मिला</b>\n\n${result.error}`, { parse_mode: "HTML" });
+            return ctx.reply(`❌ <b>ғᴀɪʟᴇᴅ ᴛᴏ ғᴇᴛᴄʜ ɪɴғᴏ</b>\n\n${result.error}`, { parse_mode: "HTML" });
         }
 
         const formatted = formatFullInfo(result.data, uid, region);
@@ -869,21 +869,21 @@ async function executeFullInfoQuery(ctx, uid, region = "IND") {
         await ctx.reply(formatted.text, {
             parse_mode: "HTML",
             reply_markup: Markup.inlineKeyboard([
-                [Markup.button.callback("🔍 Check Another UID (दूसरी ID चेक करें)", "prompt_info")]
+                [Markup.button.callback("🔍 ᴄʜᴇᴄᴋ ᴀɴᴏᴛʜᴇʀ ᴜɪᴅ", "prompt_info")]
             ]).reply_markup
         });
 
     } catch (err) {
         console.error("Info query error:", err.message);
         try { await ctx.telegram.deleteMessage(ctx.chat.id, loadingMsg.message_id); } catch { }
-        ctx.reply("⚠️ Player डिटेल्स फेच करते समय त्रुटि आई। कृपया थोड़ी देर बाद पुनः प्रयास करें।");
+        ctx.reply("⚠️ ᴇʀʀᴏʀ ғᴇᴛᴄʜɪɴɢ ᴘʟᴀʏᴇʀ ᴅᴇᴛᴀɪʟs. ᴘʟᴇᴀsᴇ ᴛʀʏ ᴀɢᴀɪɴ ʟᴀᴛᴇʀ.");
     }
 }
 
 // ─── Helper: Execute Unban Verification Query (With Clean Loading Indicator) ─
 async function executeUnbanQuery(ctx, uid, region = "IND") {
     if (!/^\d{5,15}$/.test(uid)) {
-        return ctx.reply("❌ <b>Invalid UID!</b>\nUID केवल अंकों (5-15 Digits) में होनी चाहिए।\n\n<i>(उदाहरण: <code>2540951574</code>)</i>", {
+        return ctx.reply("❌ <b>ɪɴᴠᴀʟɪᴅ ᴜɪᴅ!</b>\nᴜɪᴅ ᴍᴜsᴛ ʙᴇ 5-15 ᴅɪɢɪᴛs ᴏɴʟʏ.\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>2540951574</code>)</i>", {
             parse_mode: "HTML",
         });
     }
@@ -892,7 +892,7 @@ async function executeUnbanQuery(ctx, uid, region = "IND") {
 
     try { await ctx.sendChatAction("typing"); } catch { }
 
-    const loadingMsg = await ctx.reply(`⏳ <b>Loading... Ban Status चेक किया जा रहा है</b>\n\n🆔 <b>UID:</b> <code>${uid}</code>\n🔍 Server से Player Data फेच हो रहा है, कृपया थोड़ा इंतज़ार करें...`, {
+    const loadingMsg = await ctx.reply(`⏳ <b>ʟᴏᴀᴅɪɴɢ ʙᴀɴ sᴛᴀᴛᴜs...</b>\n\n🆔 <b>ᴜɪᴅ:</b> <code>${uid}</code>\n🔍 ғᴇᴛᴄʜɪɴɢ ᴘʟᴀʏᴇʀ ᴅᴀᴛᴀ ғʀᴏᴍ sᴇʀᴠᴇʀ, ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ...`, {
         parse_mode: "HTML",
     });
 
@@ -901,7 +901,7 @@ async function executeUnbanQuery(ctx, uid, region = "IND") {
         try { await ctx.telegram.deleteMessage(ctx.chat.id, loadingMsg.message_id); } catch { }
 
         if (!result.success) {
-            return ctx.reply(`❌ <b>Player Not Found / खिलाड़ी नहीं मिला</b>\n\n${result.error}`, { parse_mode: "HTML" });
+            return ctx.reply(`❌ <b>ᴘʟᴀʏᴇʀ ɴᴏᴛ ғᴏᴜɴᴅ</b>\n\n${result.error}`, { parse_mode: "HTML" });
         }
 
         const preview = formatUnbanPreview(result.data, uid, region);
@@ -924,7 +924,7 @@ async function executeUnbanQuery(ctx, uid, region = "IND") {
     } catch (err) {
         console.error("Unban query error:", err.message);
         try { await ctx.telegram.deleteMessage(ctx.chat.id, loadingMsg.message_id); } catch { }
-        ctx.reply("⚠️ Ban Status ऑडिट करते समय त्रुटि आई। कृपया थोड़ी देर बाद पुनः प्रयास करें।");
+        ctx.reply("⚠️ ᴇʀʀᴏʀ ᴀᴜᴅɪᴛɪɴɢ ʙᴀɴ sᴛᴀᴛᴜs. ᴘʟᴇᴀsᴇ ᴛʀʏ ᴀɢᴀɪɴ ʟᴀᴛᴇʀ.");
     }
 }
 
@@ -960,7 +960,7 @@ function renderAdminMenuKeyboard() {
 
 bot.command("admin", async (ctx) => {
     if (!isAdmin(ctx.from.id)) {
-        return ctx.reply("⛔ <b>Access Denied!</b>\nयह कमांड केवल बॉट Admin के लिए उपलब्ध है।", {
+        return ctx.reply("⛔ <b>ᴀᴄᴄᴇss ᴅᴇɴɪᴇᴅ!</b>\nᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ɪs ᴏɴʟʏ ғᴏʀ ʙᴏᴛ ᴀᴅᴍɪɴ.", {
             parse_mode: "HTML"
         });
     }
@@ -968,11 +968,11 @@ bot.command("admin", async (ctx) => {
     adminStates.delete(ctx.from.id);
 
     const msg = `
-👑 <b>WANTED BOT — ADMIN CONTROL PANEL</b>
+👑 <b>RAJ CODER FF — ADMIN CONTROL PANEL</b>
 ━━━━━━━━━━━━━━━━━━━━━━━
-नमस्ते Admin! यहाँ से आप Bot के सभी Features, Channels, Prices और Paytm Gateway को Live कंट्रोल कर सकते हैं:
+ᴡᴇʟᴄᴏᴍᴇ ᴀᴅᴍɪɴ! ғʀᴏᴍ ʜᴇʀᴇ ʏᴏᴜ ᴄᴀɴ ᴍᴀɴᴀɢᴇ ʙᴏᴛ ғᴇᴀᴛᴜʀᴇs, ᴄʜᴀɴɴᴇʟs, ᴘʀɪᴄᴇs ᴀɴᴅ ɢᴀᴛᴇᴡᴀʏ:
 
-👇 <b>कंट्रोल करने के लिए नीचे कोई विकल्प चुनें:</b>
+👇 <b>sᴇʟᴇᴄᴛ ᴀɴ ᴏᴘᴛɪᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ᴍᴀɴᴀɢᴇ:</b>
 `;
     return ctx.reply(msg, {
         parse_mode: "HTML",
@@ -987,9 +987,9 @@ bot.action("adm_menu", async (ctx) => {
     adminStates.delete(ctx.from.id);
 
     const msg = `
-👑 <b>WANTED BOT — ADMIN CONTROL PANEL</b>
+👑 <b>RAJ CODER FF — ADMIN CONTROL PANEL</b>
 ━━━━━━━━━━━━━━━━━━━━━━━
-कृपया वह सेक्शन चुनें जिसे आप मैनेज करना चाहते हैं:
+ᴘʟᴇᴀsᴇ sᴇʟᴇᴄᴛ ᴛʜᴇ sᴇᴄᴛɪᴏɴ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴍᴀɴᴀɢᴇ:
 `;
     return ctx.editMessageText(msg, {
         parse_mode: "HTML",
@@ -1012,13 +1012,13 @@ bot.action("adm_channels", async (ctx) => {
     const msg = `
 📢 <b>CHANNEL & SUPPORT SETTINGS</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-🛡️ <b>Force Join Status:</b> <b>${s.force_join_enabled ? "🟢 ON (सक्रिय)" : "🔴 OFF (बंद)"}</b>
+🛡️ <b>Force Join Status:</b> <b>${s.force_join_enabled ? "🟢 ON (ACTIVE)" : "🔴 OFF (DISABLED)"}</b>
 🏷️ <b>Channel Username:</b> <code>${s.force_channel_username || "Not Set"}</code>
 🔗 <b>Channel Link:</b> <code>${s.force_channel_link || "Not Set"}</code>
-💬 <b>Support Link:</b> <code>${s.support_link || "https://t.me/wantedmod52"}</code>
+💬 <b>Support Link:</b> <code>${s.support_link || "https://t.me/RajCoderFf"}</code>
 🌐 <b>Ban Server URL:</b> <code>${s.server_login_base_url || "http://109.71.252.111:30008/"}</code>
 ━━━━━━━━━━━━━━━━━━━━━━
-<i>Note: Force Join काम करने के लिए Bot का चैनल में Admin होना ज़रूरी है।</i>
+<i>ɴᴏᴛᴇ: ʙᴏᴛ ᴍᴜsᴛ ʙᴇ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ғᴏʀ ғᴏʀᴄᴇ ᴊᴏɪɴ ᴛᴏ ᴡᴏʀᴋ.</i>
 `;
     const kb = Markup.inlineKeyboard([
         [
@@ -1045,7 +1045,7 @@ bot.action("adm_set_support", async (ctx) => {
     if (!isAdmin(ctx.from.id)) return;
     await ctx.answerCbQuery();
     adminStates.set(ctx.from.id, { action: "SET_SUPPORT_LINK" });
-    return ctx.reply("💬 <b>कृपया नया Support Link भेजें:</b>\n\n*Example:* <code>https://t.me/wantedmod52</code>", {
+    return ctx.reply("💬 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ɴᴇᴡ sᴜᴘᴘᴏʀᴛ ʟɪɴᴋ:</b>\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>https://t.me/RajCoderFf</code>", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_channels")]]).reply_markup
     });
@@ -1055,7 +1055,7 @@ bot.action("adm_set_server_url", async (ctx) => {
     if (!isAdmin(ctx.from.id)) return;
     await ctx.answerCbQuery();
     adminStates.set(ctx.from.id, { action: "SET_SERVER_URL" });
-    return ctx.reply("🌐 <b>कृपया Ban Login के लिए नया Server Base URL भेजें:</b>\n\n*Example:* <code>http://109.71.252.111:30008/</code>", {
+    return ctx.reply("🌐 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ɴᴇᴡ sᴇʀᴠᴇʀ ʙᴀsᴇ ᴜʀʟ ғᴏʀ ʙᴀɴ ʟᴏɢɪɴ:</b>\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>https://ff-telegram-bot-1t2u.onrender.com/</code>", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_channels")]]).reply_markup
     });
@@ -1074,7 +1074,7 @@ bot.action("adm_set_link", async (ctx) => {
     if (!isAdmin(ctx.from.id)) return;
     await ctx.answerCbQuery();
     adminStates.set(ctx.from.id, { action: "SET_CHANNEL_LINK" });
-    return ctx.reply("🔗 <b>कृपया नया Channel Link भेजें:</b>\n\n*Example:* <code>https://t.me/yourchannel</code>", {
+    return ctx.reply("🔗 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ɴᴇᴡ ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ:</b>\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>https://t.me/yourchannel</code>", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_channels")]]).reply_markup
     });
@@ -1084,7 +1084,7 @@ bot.action("adm_set_user", async (ctx) => {
     if (!isAdmin(ctx.from.id)) return;
     await ctx.answerCbQuery();
     adminStates.set(ctx.from.id, { action: "SET_CHANNEL_USER" });
-    return ctx.reply("🏷️ <b>कृपया नया Channel Username भेजें (@ के साथ):</b>\n\n*Example:* <code>@yourchannel</code>", {
+    return ctx.reply("🏷️ <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ɴᴇᴡ ᴄʜᴀɴɴᴇʟ ᴜsᴇʀɴᴀᴍᴇ (ᴡɪᴛʜ @):</b>\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>@yourchannel</code>", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_channels")]]).reply_markup
     });
@@ -1116,7 +1116,7 @@ bot.action("adm_prices", async (ctx) => {
 ━━━━━━━━━━━━━━━━━━━━━━
 ${list || "<i>No packages defined</i>"}
 ━━━━━━━━━━━━━━━━━━━━━━
-✏️ <b>नया पैकेज जोड़ने या Price बदलने के लिए नीचे Button चुनें:</b>
+✏️ <b>ᴄʜᴏᴏsᴇ ᴀ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ᴀᴅᴅ ᴏʀ ᴇᴅɪᴛ ᴘᴀᴄᴋᴀɢᴇs:</b>
 `;
     const kb = Markup.inlineKeyboard([
         [
@@ -1143,7 +1143,7 @@ bot.action("adm_pick_price_edit", async (ctx) => {
         rows.push([Markup.button.callback(`✏️ ${v.label} (₹${v.price})`, `adm_chgprice_${k}`)]);
     }
     rows.push([Markup.button.callback("⬅️ Back", "adm_prices")]);
-    return ctx.editMessageText("✏️ <b>किस पैकेज का Price बदलना चाहते हैं? चुनें:</b>", {
+    return ctx.editMessageText("✏️ <b>sᴇʟᴇᴄᴛ ᴀ ᴘᴀᴄᴋᴀɢᴇ ᴛᴏ ᴇᴅɪᴛ ᴘʀɪᴄᴇ:</b>", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard(rows).reply_markup
     });
@@ -1154,7 +1154,7 @@ bot.action(/^adm_chgprice_(.+)$/, async (ctx) => {
     const key = ctx.match[1];
     await ctx.answerCbQuery();
     adminStates.set(ctx.from.id, { action: "EDIT_PRICE", key: key });
-    return ctx.reply(`💰 <b>${key}</b> का नया Price (केवल संख्या / Numbers) भेजें:\n\n*Example:* <code>199</code>`, {
+    return ctx.reply(`💰 sᴇɴᴅ ɴᴇᴡ ᴘʀɪᴄᴇ ғᴏʀ <b>${key}</b> (ɴᴜᴍʙᴇʀs ᴏɴʟʏ):\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>199</code>`, {
         parse_mode: "HTML"
     });
 });
@@ -1166,7 +1166,7 @@ bot.action("adm_prompt_add_pkg", async (ctx) => {
     const msg = `
 ➕ <b>ADD NEW UNBAN PACKAGE</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-कृपया नीचे दिए गए Format में पैकेज की जानकारी भेजें:
+ᴘʟᴇᴀsᴇ sᴇɴᴅ ᴘᴀᴄᴋᴀɢᴇ ɪɴғᴏʀᴍᴀᴛɪᴏɴ ɪɴ ᴛʜᴇ ғᴏʟʟᴏᴡɪɴɢ ғᴏʀᴍᴀᴛ:
 
 <code>KEY | LABEL | PRICE</code>
 
@@ -1189,7 +1189,7 @@ bot.action("adm_pick_pkg_del", async (ctx) => {
         rows.push([Markup.button.callback(`🗑️ ${v.label}`, `adm_dopkgdel_${k}`)]);
     }
     rows.push([Markup.button.callback("⬅️ Back", "adm_prices")]);
-    return ctx.editMessageText("🗑️ <b>किस पैकेज को Delete करना चाहते हैं? चुनें:</b>", {
+    return ctx.editMessageText("🗑️ <b>sᴇʟᴇᴄᴛ ᴀ ᴘᴀᴄᴋᴀɢᴇ ᴛᴏ ᴅᴇʟᴇᴛᴇ:</b>", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard(rows).reply_markup
     });
@@ -1216,8 +1216,8 @@ bot.action("adm_paytm", async (ctx) => {
     const msg = `
 ⚡ <b>PAYTM GATEWAY CONFIGURATION</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-🟢 <b>Gateway Status:</b> <b>${p.enabled ? "ACTIVE (सक्रिय)" : "DISABLED (बंद)"}</b>
-🤖 <b>Auto-Verification:</b> <b>${p.auto_verify ? "🟢 ON (स्वचालित)" : "⚪ OFF (मैनुअल)"}</b>
+🟢 <b>Gateway Status:</b> <b>${p.enabled ? "ACTIVE" : "DISABLED"}</b>
+🤖 <b>Auto-Verification:</b> <b>${p.auto_verify ? "🟢 ON (AUTO)" : "⚪ OFF (MANUAL)"}</b>
 
 🆔 <b>Paytm MID:</b> <code>${midMasked}</code>
 🔑 <b>Merchant Key:</b> <code>${keyMasked}</code>
@@ -1267,7 +1267,7 @@ bot.action("adm_setup_paytm_prompt", async (ctx) => {
     const prompt = `
 ⚡ <b>PAYTM GATEWAY SETUP</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-कृपया नीचे दिए गए Format में एक-एक Line में जानकारी भेजें:
+ᴘʟᴇᴀsᴇ sᴇɴᴅ ᴅᴇᴛᴀɪʟs ʟɪɴᴇ ʙʏ ʟɪɴᴇ ɪɴ ᴛʜᴇ ғᴏʟʟᴏᴡɪɴɢ ғᴏʀᴍᴀᴛ:
 
 <code>Paytm MID: YOUR_MID
 Merchant Key: YOUR_KEY
@@ -1275,8 +1275,8 @@ Paytm UPI ID: your@paytm
 Merchant Name: Your Store Name</code>
 
 ℹ️ <b>Notes:</b>
-• <b>Paytm UPI ID</b> instant UPI QR Code बनाने के लिए काम आता है।
-• <b>Paytm MID & Key</b> auto-verification & instant status check के लिए उपयोग होते हैं।
+• <b>ᴘᴀʏᴛᴍ ᴜᴘɪ ɪᴅ</b> ɪs ᴜsᴇᴅ ᴛᴏ ɢᴇɴᴇʀᴀᴛᴇ ɪɴsᴛᴀɴᴛ ᴜᴘɪ ǫʀ ᴄᴏᴅᴇ.
+• <b>ᴘᴀʏᴛᴍ ᴍɪᴅ & ᴋᴇʏ</b> ᴀʀᴇ ᴜsᴇᴅ ғᴏʀ ᴀᴜᴛᴏ-ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ & ɪɴsᴛᴀɴᴛ sᴛᴀᴛᴜs ᴄʜᴇᴄᴋ.
 `;
     return ctx.reply(prompt, {
         parse_mode: "HTML",
@@ -1327,7 +1327,7 @@ bot.action("adm_broadcast", async (ctx) => {
     await ctx.answerCbQuery();
     adminStates.set(ctx.from.id, { action: "BROADCAST" });
 
-    return ctx.reply("📢 <b>BROADCAST ANNOUNCEMENT</b>\n\nवह Message भेजें जो आप सभी Bot Users को भेजना चाहते हैं (HTML supported):\n\n*Cancel करने के लिए नीचे टैप करें:*", {
+    return ctx.reply("📢 <b>ʙʀᴏᴀᴅᴄᴀsᴛ ᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛ</b>\n\nsᴇɴᴅ ᴛʜᴇ ᴍᴇssᴀɢᴇ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ʙʀᴏᴀᴅᴄᴀsᴛ ᴛᴏ ᴀʟʟ ᴜsᴇʀs (ʜᴛᴍʟ sᴜᴘᴘᴏʀᴛᴇᴅ):\n\n*ᴛᴀᴘ ʙᴇʟᴏᴡ ᴛᴏ ᴄᴀɴᴄᴇʟ:*", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_menu")]]).reply_markup
     });
@@ -1342,7 +1342,7 @@ bot.action("adm_users", async (ctx) => {
     const lines = users.map((u, i) => `${i + 1}. <code>${u.id}</code> | ${u.first_name || "User"} (${u.username}) | Bal: ₹${(u.balance || 0).toFixed(2)}`);
 
     const msg = `
-👥 <b>RECENT USERS DIRECTORY (हाल ही के यूज़र्स)</b>
+👥 <b>ʀᴇᴄᴇɴᴛ ᴜsᴇʀs ᴅɪʀᴇᴄᴛᴏʀʏ</b>
 ━━━━━━━━━━━━━━━━━━━━━━
 ${lines.join("\n") || "No users yet."}
 ━━━━━━━━━━━━━━━━━━━━━━
@@ -1365,10 +1365,10 @@ bot.command("prices", async (ctx) => {
 ━━━━━━━━━━━━━━━━━━━━━━
 ${list}
 ━━━━━━━━━━━━━━━━━━━━━━
-✏️ <b>Price बदलने का तरीका:</b>
+✏️ <b>ʜᴏᴡ ᴛᴏ ᴄʜᴀɴɢᴇ ᴘʀɪᴄᴇ:</b>
 <code>/setprice &lt;type&gt; &lt;amount&gt;</code>
 
-<b>उदाहरण / Example:</b>
+<b>ᴇxᴀᴍᴘʟᴇ:</b>
 <code>/setprice 3day 99</code>
 <code>/setprice 7day 199</code>
 <code>/setprice 30day 499</code>
@@ -1381,11 +1381,11 @@ ${list}
 
 bot.command("setprice", async (ctx) => {
     if (!isAdmin(ctx.from.id)) {
-        return ctx.reply("⛔ केवल Admin ही Price बदल सकता है!");
+        return ctx.reply("⛔ ᴏɴʟʏ ᴀᴅᴍɪɴ ᴄᴀɴ ᴄʜᴀɴɢᴇ ᴘʀɪᴄᴇs!");
     }
     const parts = ctx.message.text.trim().split(/\s+/);
     if (parts.length < 3) {
-        return ctx.reply("❌ <b>उपयोग / Usage:</b> <code>/setprice &lt;key&gt; &lt;amount&gt;</code>\n\n*Example:* <code>/setprice 3day 99</code>\n\nCheck all keys: <code>/prices</code>", {
+        return ctx.reply("❌ <b>ᴜsᴀɢᴇ:</b> <code>/setprice &lt;key&gt; &lt;amount&gt;</code>\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>/setprice 3day 99</code>\n\nᴄʜᴇᴄᴋ ᴀʟʟ ᴋᴇʏs: <code>/prices</code>", {
             parse_mode: "HTML"
         });
     }
@@ -1394,16 +1394,16 @@ bot.command("setprice", async (ctx) => {
     const amount = parseInt(parts[2]);
 
     if (isNaN(amount) || amount <= 0) {
-        return ctx.reply("❌ Amount मान्य संख्या (Valid Number) होनी चाहिए!");
+        return ctx.reply("❌ ᴀᴍᴏᴜɴᴛ ᴍᴜsᴛ ʙᴇ ᴀ ᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ!");
     }
 
     const success = updatePrice(key, amount);
     if (success) {
-        return ctx.reply(`✅ <b>Price Update हो गया!</b>\n\n<b>${key}</b> का नया Price: <b>₹${amount}</b>`, {
+        return ctx.reply(`✅ <b>ᴘʀɪᴄᴇ ᴜᴘᴅᴀᴛᴇᴅ!</b>\n\nɴᴇᴡ ᴘʀɪᴄᴇ ғᴏʀ <b>${key}</b>: <b>₹${amount}</b>`, {
             parse_mode: "HTML"
         });
     } else {
-        return ctx.reply(`❌ Invalid key: <code>${key}</code>\n\nKeys देखने के लिए <code>/prices</code> लिखें।`, {
+        return ctx.reply(`❌ ɪɴᴠᴀʟɪᴅ ᴋᴇʏ: <code>${key}</code>\n\nᴛʏᴘᴇ <code>/prices</code> ᴛᴏ ᴠɪᴇᴡ ᴀʟʟ ᴋᴇʏs.`, {
             parse_mode: "HTML"
         });
     }
@@ -1423,7 +1423,7 @@ bot.on("text", async (ctx) => {
             s.force_channel_link = text;
             s.force_join_enabled = true;
             saveSettings(s);
-            return ctx.reply(`✅ <b>Channel Link अपडेट हो गया!</b>\n\n🔗 ${text}`, {
+            return ctx.reply(`✅ <b>ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ ᴜᴘᴅᴀᴛᴇᴅ!</b>\n\n🔗 ${text}`, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Channel Settings", "adm_channels")]]).reply_markup
             });
@@ -1434,7 +1434,7 @@ bot.on("text", async (ctx) => {
             s.force_channel_username = text.startsWith("@") ? text : `@${text}`;
             s.force_join_enabled = true;
             saveSettings(s);
-            return ctx.reply(`✅ <b>Channel Username अपडेट हो गया!</b>\n\n🏷️ ${s.force_channel_username}`, {
+            return ctx.reply(`✅ <b>ᴄʜᴀɴɴᴇʟ ᴜsᴇʀɴᴀᴍᴇ ᴜᴘᴅᴀᴛᴇᴅ!</b>\n\n🏷️ ${s.force_channel_username}`, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Channel Settings", "adm_channels")]]).reply_markup
             });
@@ -1444,7 +1444,7 @@ bot.on("text", async (ctx) => {
             const s = getSettings();
             s.support_link = text;
             saveSettings(s);
-            return ctx.reply(`✅ <b>Support Link अपडेट हो गया!</b>\n\n💬 ${text}`, {
+            return ctx.reply(`✅ <b>sᴜᴘᴘᴏʀᴛ ʟɪɴᴋ ᴜᴘᴅᴀᴛᴇᴅ!</b>\n\n💬 ${text}`, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Channel & Support Settings", "adm_channels")]]).reply_markup
             });
@@ -1454,7 +1454,7 @@ bot.on("text", async (ctx) => {
             const s = getSettings();
             s.server_login_base_url = text.trim();
             saveSettings(s);
-            return ctx.reply(`✅ <b>Ban Server Base URL अपडेट हो गया!</b>\n\n🌐 <code>${s.server_login_base_url}</code>`, {
+            return ctx.reply(`✅ <b>ʙᴀɴ sᴇʀᴠᴇʀ ʙᴀsᴇ ᴜʀʟ ᴜᴘᴅᴀᴛᴇᴅ!</b>\n\n🌐 <code>${s.server_login_base_url}</code>`, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Channel & Server Settings", "adm_channels")]]).reply_markup
             });
@@ -1464,10 +1464,10 @@ bot.on("text", async (ctx) => {
             const key = adminState.key;
             const amt = parseInt(text);
             if (isNaN(amt) || amt <= 0) {
-                return ctx.reply("❌ कृपया एक मान्य संख्या (Valid Number) दर्ज करें!");
+                return ctx.reply("❌ ᴘʟᴇᴀsᴇ ᴇɴᴛᴇʀ ᴀ ᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ!");
             }
             updatePrice(key, amt);
-            return ctx.reply(`✅ <b>${key}</b> का नया Price <b>₹${amt}</b> सेट हो गया!`, {
+            return ctx.reply(`✅ ɴᴇᴡ ᴘʀɪᴄᴇ ғᴏʀ <b>${key}</b> sᴇᴛ ᴛᴏ <b>₹${amt}</b>!`, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Prices List", "adm_prices")]]).reply_markup
             });
@@ -1476,11 +1476,11 @@ bot.on("text", async (ctx) => {
         if (adminState.action === "ADD_PACKAGE") {
             const parts = text.split("|").map((p) => p.trim());
             if (parts.length < 3) {
-                return ctx.reply("❌ Invalid format! कृपया <code>KEY | LABEL | PRICE</code> में भेजें।", { parse_mode: "HTML" });
+                return ctx.reply("❌ ɪɴᴠᴀʟɪᴅ ғᴏʀᴍᴀᴛ! ᴘʟᴇᴀsᴇ sᴇɴᴅ ɪɴ <code>KEY | LABEL | PRICE</code> ғᴏʀᴍᴀᴛ.", { parse_mode: "HTML" });
             }
             const [k, lbl, prc] = parts;
             addPackage(k.toLowerCase(), lbl, prc);
-            return ctx.reply(`✅ <b>नया पैकेज जुड़ गया!</b>\n\n🏷️ <b>${lbl}</b> (${k})\n💰 <b>₹${prc}</b>`, {
+            return ctx.reply(`✅ <b>ɴᴇᴡ ᴘᴀᴄᴋᴀɢᴇ ᴀᴅᴅᴇᴅ!</b>\n\n🏷️ <b>${lbl}</b> (${k})\n💰 <b>₹${prc}</b>`, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Prices List", "adm_prices")]]).reply_markup
             });
@@ -1512,7 +1512,7 @@ bot.on("text", async (ctx) => {
             gw.paytm.enabled = true;
             saveGateway(gw);
 
-            return ctx.reply(`✅ <b>Paytm Configuration सुरक्षित रूप से Save हो गया!</b>\n\n🆔 MID: <code>${gw.paytm.mid ? gw.paytm.mid.slice(0, 4) + "****" : "Not Set"}</code>\n💳 UPI ID: <code>${gw.paytm.upi_id}</code>\n🏷️ Name: <b>${gw.paytm.merchant_name}</b>`, {
+            return ctx.reply(`✅ <b>ᴘᴀʏᴛᴍ ᴄᴏɴғɪɢᴜʀᴀᴛɪᴏɴ sᴀᴠᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ!</b>\n\n🆔 MID: <code>${gw.paytm.mid ? gw.paytm.mid.slice(0, 4) + "****" : "Not Set"}</code>\n💳 UPI ID: <code>${gw.paytm.upi_id}</code>\n🏷️ Name: <b>${gw.paytm.merchant_name}</b>`, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Paytm Settings", "adm_paytm")]]).reply_markup
             });
@@ -1526,7 +1526,7 @@ bot.on("text", async (ctx) => {
             const adminChatId = ctx.chat.id;
 
             // Immediately reply to admin so bot does not freeze or wait
-            await ctx.reply(`📢 <b>Broadcast Background में शुरू हो चुका है!</b>\n\n👥 <b>Total Users:</b> ${userIds.length}\n⚡ बॉट सामान्य रूप से सभी काम करता रहेगा और बिल्कुल नहीं रुकेगा।\nकार्य पूर्ण होते ही आपको अंतिम रिपोर्ट मिल जाएगी।`, {
+            await ctx.reply(`📢 <b>ʙʀᴏᴀᴅᴄᴀsᴛ sᴛᴀʀᴛᴇᴅ ɪɴ ʙᴀᴄᴋɢʀᴏᴜɴᴅ!</b>\n\n👥 <b>ᴛᴏᴛᴀʟ ᴜsᴇʀs:</b> ${userIds.length}\n⚡ ʙᴏᴛ ᴡɪʟʟ ᴋᴇᴇᴘ ʀᴜɴɴɪɴɢ ɴᴏʀᴍᴀʟʟʏ ᴡɪᴛʜᴏᴜᴛ ɪɴᴛᴇʀʀᴜᴘᴛɪᴏɴ.\nʏᴏᴜ ᴡɪʟʟ ʀᴇᴄᴇɪᴠᴇ ᴀ ғɪɴᴀʟ ʀᴇᴘᴏʀᴛ ᴏɴᴄᴇ ᴄᴏᴍᴘʟᴇᴛᴇᴅ.`, {
                 parse_mode: "HTML",
                 reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Admin Menu", "adm_menu")]]).reply_markup
             });
@@ -1546,7 +1546,7 @@ bot.on("text", async (ctx) => {
                 }
 
                 try {
-                    await bot.telegram.sendMessage(adminChatId, `✅ <b>Broadcast Report (प्रसारण रिपोर्ट):</b>\n\n📨 कुल सफल (Sent): <b>${sent}</b>\n❌ विफल/Blocked: <b>${failed}</b>\n👥 कुल यूज़र्स: <b>${userIds.length}</b>`, {
+                    await bot.telegram.sendMessage(adminChatId, `✅ <b>ʙʀᴏᴀᴅᴄᴀsᴛ ʀᴇᴘᴏʀᴛ:</b>\n\n📨 sᴇɴᴛ: <b>${sent}</b>\n❌ ғᴀɪʟᴇᴅ/ʙʟᴏᴄᴋᴇᴅ: <b>${failed}</b>\n👥 ᴛᴏᴛᴀʟ ᴜsᴇʀs: <b>${userIds.length}</b>`, {
                         parse_mode: "HTML"
                     });
                 } catch (reportErr) {
@@ -1585,16 +1585,16 @@ bot.on("text", async (ctx) => {
         if (userState.mode === "WAITING_BAN_TOKEN") {
             const token = text.trim();
             if (token.length < 10) {
-                return ctx.reply("WANTED\nBAN LOGIN\n\n❌ <b>INVALID ACCESS TOKEN!</b>\nToken is too short. Please send a valid Access Token.", {
+                return ctx.reply("RAJ CODER FF\nBAN LOGIN\n\n❌ <b>INVALID ACCESS TOKEN!</b>\nToken is too short. Please send a valid Access Token.", {
                     parse_mode: "HTML",
                     reply_markup: getMainKeyboard().reply_markup
                 });
             }
 
-            // Generate 10-digit session ID (like 7767893310 from screenshot)
-            const sessionId = `${Math.floor(1000000000 + Math.random() * 9000000000)}`;
+            // Use Telegram User ID as Session ID (Exact match with working bot)
+            const sessionId = String(ctx.from.id);
             const s = getSettings();
-            const baseServer = s.server_login_base_url || "http://109.71.252.111:30008/";
+            const baseServer = s.server_login_base_url || "https://ff-telegram-bot-1t2u.onrender.com/";
             const serverLoginUrl = `${baseServer.endsWith("/") ? baseServer : baseServer + "/"}${sessionId}/`;
 
             saveSession(ctx.from.id, { token, sessionId, serverLoginUrl });
@@ -1602,7 +1602,19 @@ bot.on("text", async (ctx) => {
             const configObj = { serverLoginUrl };
             const jsonStr = JSON.stringify(configObj, null, 2);
 
-            const successMsg = `WANTED\nBAN LOGIN — SESSION CREATED ✅\n\n<b>SESSION DETAILS:</b>\n• <b>Session ID:</b> <code>${sessionId}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Server Login URL:</b>\n<code>${serverLoginUrl}</code>\n\n📁 <b>JSON Configuration:</b>\n<pre><code>${jsonStr}</code></pre>\n\n📝 <b>Instructions (निर्देश):</b>\n1. Download the attached <b>login_config.json</b> file below.\n2. Copy / Move this file into:\n<code>Android/data/com.dts.freefiremax/files/</code>\n3. Open Free Fire Max and check your profile.\n\n<i>To stop this session at any time, tap STOP SESSION below.</i>`;
+            const successMsg = `RAJ CODER FF\nBAN LOGIN — SESSION CREATED ✅\n\n<b>SESSION DETAILS:</b>\n• <b>Session ID:</b> <code>${sessionId}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Server Login URL:</b>\n<code>${serverLoginUrl}</code>\n\n📁 <b>JSON Configuration:</b>\n<pre><code>${jsonStr}</code></pre>\n\nᴘʟᴀᴄᴇ ᴛʜɪs ғɪʟᴇ ɪɴ ʏᴏᴜʀ ɢᴀᴍᴇ ᴅɪʀᴇᴄᴛᴏʀʏ
+
+ʜᴏᴡ ᴛᴏ ᴜsᴇ:
+1. ᴅᴏᴡɴʟᴏᴀᴅ ᴛʜᴇ ғɪʟᴇ
+2. ᴏᴘᴇɴ ᴛʜᴇ ғᴏʟᴅᴇʀ ᴡʜᴇʀᴇ ᴛʜᴇ ғɪʟᴇ ᴡᴀs ᴅᴏᴡɴʟᴏᴀᴅᴇᴅ
+3. ᴄᴏᴘʏ ᴛʜᴇ ғɪʟᴇ
+4. ɢᴏ ᴛᴏ: /storage/emulated/0/Android/data/com.dts.freefiremax/files/
+5. ᴘᴀsᴛᴇ ᴛʜᴇ ғɪʟᴇ ɪɴᴛᴏ ᴛʜɪs ғᴏʟᴅᴇʀ
+6. ᴏᴘᴇɴ ꜰʀᴇᴇ ꜰɪʀᴇ ᴏʀ ꜰʀᴇᴇ ꜰɪʀᴇ ᴍᴀx, ᴄʜᴏᴏsᴇ ᴀɴʏ ᴘʟᴀᴛꜰᴏʀᴍ ᴀɴᴅ ʟᴏɢɪɴ ᴛᴏ ʏᴏᴜʀ ɢᴀᴍᴇ ᴀᴄᴄᴏᴜɴᴛ
+7. ᴏɴᴄᴇ ʟᴏɢɢᴇᴅ ɪɴ, ʏᴏᴜ ᴄᴀɴ ᴄʜᴇᴄᴋ ʏᴏᴜʀ ʙᴀɴɴᴇᴅ ɢᴀᴍᴇ ᴀᴄᴄᴏᴜɴᴛ ᴀɴᴅ ᴠɪᴇᴡ ʏᴏᴜʀ ɢᴀᴍᴇ ᴘʀᴏꜰɪʟᴇ
+
+ɴᴏᴛᴇ: ᴛʜɪs ᴍᴇᴛʜᴏᴅ ᴡᴏʀᴋs ᴡɪᴛʜ ʙᴏᴛʜ ꜰʀᴇᴇ ꜰɪʀᴇ ᴀɴᴅ ꜰʀᴇᴇ ꜰɪʀᴇ ᴍᴀx.
+ɪғ ʏᴏᴜ ғᴀᴄᴇ ᴀɴʏ ɪssᴜᴇs, ᴅᴍ @RajCoderFf`;
 
             await ctx.reply(successMsg, {
                 parse_mode: "HTML",
@@ -1614,7 +1626,7 @@ bot.on("text", async (ctx) => {
                     source: Buffer.from(jsonStr, "utf-8"),
                     filename: "login_config.json"
                 }, {
-                    caption: "📄 <b>login_config.json</b> — Place in <code>Android/data/com.dts.freefiremax/files/</code>",
+                    caption: "📄 <b>ʟᴏɢɪɴ_ᴄᴏɴғɪɢ.ᴊsᴏɴ</b> — ᴘʟᴀᴄᴇ ɪɴ <code>Android/data/com.dts.freefiremax/files/</code>",
                     parse_mode: "HTML"
                 });
             } catch (e) {
@@ -1626,7 +1638,7 @@ bot.on("text", async (ctx) => {
         if (userState.mode === "WALLET_CUSTOM_AMOUNT") {
             const amt = parseInt(text);
             if (isNaN(amt) || amt < 10) {
-                return ctx.reply("❌ कृपया एक मान्य संख्या दर्ज करें (कम से कम ₹10)!");
+                return ctx.reply("❌ ᴘʟᴇᴀsᴇ ᴇɴᴛᴇʀ ᴀ ᴠᴀʟɪᴅ ᴀᴍᴏᴜɴᴛ (ᴍɪɴɪᴍᴜᴍ ₹10)!");
             }
             return generateWalletTopupQr(ctx, amt);
         }
@@ -1648,7 +1660,7 @@ bot.on("text", async (ctx) => {
         return executeFullInfoQuery(ctx, text, "IND");
     }
 
-    return ctx.reply("❓ कृपया नीचे दिए गए Buttons का उपयोग करें या <code>/help</code> लिखें।", {
+    return ctx.reply("❓ ᴘʟᴇᴀsᴇ ᴜsᴇ ᴛʜᴇ ʙᴜᴛᴛᴏɴs ʙᴇʟᴏᴡ ᴏʀ ᴛʏᴘᴇ <code>/help</code>.", {
         parse_mode: "HTML"
     });
 });
@@ -1658,22 +1670,30 @@ bot.catch((err) => {
     console.error("Bot unhandled error:", err.message);
 });
 
-// ─── 24/7 Cloud Web Health Server (For Render / Railway / Cloud Hosting) ──────
+// ─── 24/7 Cloud Web Health Server & Dedicated Login Server ───────────────────
 const http = require("http");
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => {
+    const url = req.url || "/";
+    const match = url.match(/^\/(\d+)\/?$/);
+    if (match) {
+        const uid = match[1];
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+        return res.end(`<b> Server Active</b><br><b>Server URL:</b> <code>http://${req.headers.host}/${uid}/</code><br><br>👨‍💻 <b>Developed by @RajCoderFf</b>`);
+    }
+
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(`
         <html>
             <body style="font-family: Arial, sans-serif; text-align: center; padding-top: 50px; background: #0f172a; color: white;">
                 <h1>🤖 Free Fire Official Info Bot</h1>
-                <p style="color: #4ade80; font-size: 18px;">✅ Bot is Active & Running 24/7 on Clo/p>
+                <p style="color: #4ade80; font-size: 18px;">✅ Bot & Server are Active 24/7 on Cloud</p>
                 <p>Telegram: <b>@freefireofficialinfo_bot</b></p>
             </body>
         </html>
     `);
 }).listen(PORT, () => {
-    console.log(`🌐 24/7 Cloud Health Server listening on port ${PORT}`);
+    console.log(`🌐 24/7 Cloud Health & Dedicated Login Server listening on port ${PORT}`);
 });
 
 // Launch Bot with Automatic Retry
