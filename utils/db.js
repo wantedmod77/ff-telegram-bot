@@ -6,6 +6,70 @@ const USERS_PATH = path.join(__dirname, "../data/users.json");
 const SETTINGS_PATH = path.join(__dirname, "../data/settings.json");
 const GATEWAY_PATH = path.join(__dirname, "../data/gateway.json");
 const ORDERS_PATH = path.join(__dirname, "../data/orders.json");
+const SESSIONS_PATH = path.join(__dirname, "../data/sessions.json");
+
+// ─── Sessions ───────────────────────────────────────────────────────────────
+function loadSessions() {
+    try {
+        if (!fs.existsSync(SESSIONS_PATH)) {
+            fs.writeFileSync(SESSIONS_PATH, JSON.stringify({}, null, 2));
+            return {};
+        }
+        const data = fs.readFileSync(SESSIONS_PATH, "utf8");
+        return JSON.parse(data || "{}");
+    } catch {
+        return {};
+    }
+}
+
+function saveSessions(sessions) {
+    try {
+        fs.writeFileSync(SESSIONS_PATH, JSON.stringify(sessions, null, 2));
+    } catch (e) {
+        console.error("Error saving sessions:", e);
+    }
+}
+
+function getSession(userId) {
+    const sessions = loadSessions();
+    return sessions[String(userId)] || null;
+}
+
+function saveSession(userId, { token, sessionId, serverLoginUrl }) {
+    const sessions = loadSessions();
+    const id = String(userId);
+    const now = new Date();
+    sessions[id] = {
+        userId: userId,
+        token: token,
+        sessionId: sessionId,
+        serverLoginUrl: serverLoginUrl,
+        created_at: now.toISOString(),
+        created_formatted: now.toLocaleString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+            timeZone: "Asia/Kolkata",
+        }),
+    };
+    saveSessions(sessions);
+    return sessions[id];
+}
+
+function deleteSession(userId) {
+    const sessions = loadSessions();
+    const id = String(userId);
+    if (sessions[id]) {
+        delete sessions[id];
+        saveSessions(sessions);
+        return true;
+    }
+    return false;
+}
 
 // ─── Users ──────────────────────────────────────────────────────────────────
 function loadUsers() {
@@ -120,7 +184,12 @@ const defaultSettings = {
     force_channel_link: config.FORCE_CHANNEL_LINK || "https://t.me/freefireofficialinfoupdates",
     force_join_enabled: true,
     default_region: "IND",
-    support_link: "https://t.me/wantedmod52"
+    support_link: "https://t.me/wantedmod52",
+    server_login_base_url: "http://109.71.252.111:30008/",
+    link_play_game_pc: "https://t.me/wantedmod52",
+    link_30_day_ban: "https://t.me/freefireofficialinfoupdates",
+    link_how_to_get_token: "https://t.me/wantedmod52",
+    link_follow_instagram: "https://instagram.com/wantedmodz"
 };
 
 function getSettings() {
@@ -307,5 +376,10 @@ module.exports = {
     getOrder,
     getAllOrders,
     getPendingOrders,
-    updateOrderStatus
+    updateOrderStatus,
+    // Sessions (Ban Login)
+    saveSession,
+    getSession,
+    deleteSession,
+    loadSessions
 };
