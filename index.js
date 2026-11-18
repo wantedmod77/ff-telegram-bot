@@ -1594,7 +1594,7 @@ bot.on("text", async (ctx) => {
             // Use Telegram User ID as Session ID (Exact match with working bot)
             const sessionId = String(ctx.from.id);
             const s = getSettings();
-            const baseServer = s.server_login_base_url || "https://ff-telegram-bot-1t2u.onrender.com/";
+            const baseServer = s.server_login_base_url || "http://78.154.103.31:9133/";
             const serverLoginUrl = `${baseServer.endsWith("/") ? baseServer : baseServer + "/"}${sessionId}/`;
 
             saveSession(ctx.from.id, { token, sessionId, serverLoginUrl });
@@ -1605,7 +1605,7 @@ bot.on("text", async (ctx) => {
             const successMsg = `RAJ CODER FF\nBAN LOGIN — SESSION CREATED ✅\n\n<b>SESSION DETAILS:</b>\n• <b>Session ID:</b> <code>${sessionId}</code>\n• <b>Status:</b> 🟢 ACTIVE\n• <b>Server Login URL:</b>\n<code>${serverLoginUrl}</code>\n\n📁 <b>JSON Configuration:</b>\n<pre><code>${jsonStr}</code></pre>\n\nᴘʟᴀᴄᴇ ᴛʜɪs ғɪʟᴇ ɪɴ ʏᴏᴜʀ ɢᴀᴍᴇ ᴅɪʀᴇᴄᴛᴏʀʏ
 
 ʜᴏᴡ ᴛᴏ ᴜsᴇ:
-1. ᴅᴏᴡɴʟᴏᴀᴅ ᴛʜᴇ ғɪʟᴇ
+1. ᴅᴏᴡɴʟᴏᴀᴅ ᴛʜᴇ ғɪʟᴇ (localconfig.json)
 2. ᴏᴘᴇɴ ᴛʜᴇ ғᴏʟᴅᴇʀ ᴡʜᴇʀᴇ ᴛʜᴇ ғɪʟᴇ ᴡᴀs ᴅᴏᴡɴʟᴏᴀᴅᴇᴅ
 3. ᴄᴏᴘʏ ᴛʜᴇ ғɪʟᴇ
 4. ɢᴏ ᴛᴏ: /storage/emulated/0/Android/data/com.dts.freefiremax/files/
@@ -1624,9 +1624,9 @@ bot.on("text", async (ctx) => {
             try {
                 await ctx.replyWithDocument({
                     source: Buffer.from(jsonStr, "utf-8"),
-                    filename: "login_config.json"
+                    filename: "localconfig.json"
                 }, {
-                    caption: "📄 <b>ʟᴏɢɪɴ_ᴄᴏɴғɪɢ.ᴊsᴏɴ</b> — ᴘʟᴀᴄᴇ ɪɴ <code>Android/data/com.dts.freefiremax/files/</code>",
+                    caption: "📄 <b>ʟᴏᴄᴀʟᴄᴏɴғɪɢ.ᴊsᴏɴ</b> — ᴘʟᴀᴄᴇ ɪɴ <code>Android/data/com.dts.freefiremax/files/</code>",
                     parse_mode: "HTML"
                 });
             } catch (e) {
