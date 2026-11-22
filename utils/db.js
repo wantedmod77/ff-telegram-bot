@@ -103,6 +103,7 @@ function registerUser(from) {
             last_name: from.last_name || "",
             username: from.username ? `@${from.username}` : "None",
             balance: 0,
+            channel_verified: false,
             joined_at: new Date().toISOString(),
             joined_formatted: new Date().toLocaleString("en-IN", {
                 day: "2-digit",
@@ -123,6 +124,10 @@ function registerUser(from) {
             users[id].balance = 0;
             updated = true;
         }
+        if (users[id].channel_verified === undefined) {
+            users[id].channel_verified = false;
+            updated = true;
+        }
         if (from.username && users[id].username !== `@${from.username}`) {
             users[id].username = `@${from.username}`;
             updated = true;
@@ -134,6 +139,23 @@ function registerUser(from) {
         if (updated) saveUsers(users);
     }
     return users[id];
+}
+
+function setChannelVerified(userId, status = true) {
+    const users = loadUsers();
+    const id = String(userId);
+    if (users[id]) {
+        users[id].channel_verified = status;
+        saveUsers(users);
+        return true;
+    }
+    return false;
+}
+
+function isChannelVerified(userId) {
+    const users = loadUsers();
+    const id = String(userId);
+    return users[id] && users[id].channel_verified === true;
 }
 
 function getUser(userId) {
@@ -364,6 +386,8 @@ module.exports = {
     deductBalance,
     incrementQueries,
     loadUsers,
+    setChannelVerified,
+    isChannelVerified,
     // Settings
     getSettings,
     saveSettings,

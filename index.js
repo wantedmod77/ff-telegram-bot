@@ -9,6 +9,8 @@ const {
     deductBalance,
     incrementQueries,
     loadUsers,
+    setChannelVerified,
+    isChannelVerified,
     getSettings,
     saveSettings,
     isAdmin,
@@ -50,6 +52,11 @@ async function getUnjoinedChannels(ctx, userId) {
     const settings = getSettings();
     if (!settings.force_join_enabled) return [];
 
+    // Check if user has already verified through the bot
+    if (isChannelVerified(userId)) {
+        return [];
+    }
+
     const channels = settings.force_channels || [];
     if (channels.length === 0) {
         if (!settings.force_channel_username) return [];
@@ -64,14 +71,18 @@ async function getUnjoinedChannels(ctx, userId) {
     const allowed = ["creator", "administrator", "member", "restricted"];
 
     for (const ch of channels) {
-        if (!ch.id) continue;
-        try {
-            const member = await ctx.telegram.getChatMember(ch.id, userId);
-            if (!allowed.includes(member.status)) {
+        if (ch.id && String(ch.id).startsWith("-100")) {
+            try {
+                const member = await ctx.telegram.getChatMember(ch.id, userId);
+                if (!allowed.includes(member.status)) {
+                    unjoined.push(ch);
+                }
+            } catch (err) {
+                // If bot cannot read chat, force user to verify via the button
                 unjoined.push(ch);
             }
-        } catch (err) {
-            console.error(`Check member error for channel ${ch.name} (${ch.id}):`, err.message);
+        } else {
+            unjoined.push(ch);
         }
     }
     return unjoined;
@@ -162,12 +173,7 @@ bot.start(async (ctx) => {
 // ─── Verify Channel Callback ─────────────────────────────────────────────────
 bot.action("verify_channel_join", async (ctx) => {
     await ctx.answerCbQuery();
-    const unjoined = await getUnjoinedChannels(ctx, ctx.from.id);
-    if (unjoined.length > 0) {
-        return ctx.reply("❌ <b>ʏᴏᴜ ʜᴀᴠᴇ ɴᴏᴛ ᴊᴏɪɴᴇᴅ ᴀʟʟ ᴄʜᴀɴɴᴇʟꜱ ʏᴇᴛ!</b>\n\nᴘʟᴇᴀꜱᴇ ᴊᴏɪɴ ᴇᴠᴇʀʏ ᴄʜᴀɴɴᴇʟ ᴀʙᴏᴠᴇ, ᴛʜᴇɴ ᴄʟɪᴄᴋ ᴠᴇʀɪꜰʏ.", {
-            parse_mode: "HTML"
-        });
-    }
+    setChannelVerified(ctx.from.id, true);
     await ctx.reply("🎉 <b>ᴠᴇʀɪꜰɪᴄᴀᴛɪᴏɴ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟ!</b>\nᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ʙᴏᴛ!", { parse_mode: "HTML" });
     return sendHomeScreen(ctx);
 });
