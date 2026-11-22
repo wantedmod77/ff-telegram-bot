@@ -46,39 +46,68 @@ bot.use(async (ctx, next) => {
 });
 
 // ─── Channel Membership Check ────────────────────────────────────────────────
-async function isUserMember(ctx, userId) {
+async function getUnjoinedChannels(ctx, userId) {
     const settings = getSettings();
-    if (!settings.force_join_enabled || !settings.force_channel_username) {
-        return true;
+    if (!settings.force_join_enabled) return [];
+
+    const channels = settings.force_channels || [];
+    if (channels.length === 0) {
+        if (!settings.force_channel_username) return [];
+        channels.push({
+            id: settings.force_channel_username,
+            name: "ᴏꜰꜰɪᴄɪᴀʟ ᴄʜᴀɴɴᴇʟ",
+            link: settings.force_channel_link || `https://t.me/${settings.force_channel_username.replace("@", "")}`
+        });
     }
-    try {
-        const member = await ctx.telegram.getChatMember(settings.force_channel_username, userId);
-        const allowed = ["creator", "administrator", "member", "restricted"];
-        return allowed.includes(member.status);
-    } catch (err) {
-        return true;
+
+    const unjoined = [];
+    const allowed = ["creator", "administrator", "member", "restricted"];
+
+    for (const ch of channels) {
+        if (!ch.id) continue;
+        try {
+            const member = await ctx.telegram.getChatMember(ch.id, userId);
+            if (!allowed.includes(member.status)) {
+                unjoined.push(ch);
+            }
+        } catch (err) {
+            console.error(`Check member error for channel ${ch.name} (${ch.id}):`, err.message);
+        }
     }
+    return unjoined;
+}
+
+async function isUserMember(ctx, userId) {
+    const unjoined = await getUnjoinedChannels(ctx, userId);
+    return unjoined.length === 0;
 }
 
 // ─── Send Force Join Message ─────────────────────────────────────────────────
-async function sendForceJoinPrompt(ctx) {
+async function sendForceJoinPrompt(ctx, unjoinedList = null) {
     const settings = getSettings();
-    const channelLink = settings.force_channel_link || `https://t.me/${settings.force_channel_username?.replace("@", "")}`;
+    const channels = (unjoinedList && unjoinedList.length > 0)
+        ? unjoinedList
+        : (settings.force_channels && settings.force_channels.length > 0 ? settings.force_channels : [
+            { name: "ᴄʜᴀɴɴᴇʟ 1", link: "https://t.me/+jQCo6BU0zAhjZTc1" },
+            { name: "ᴄʜᴀɴɴᴇʟ 2", link: "https://t.me/+MTbKlQKhEYY4MTNl" },
+            { name: "ᴄʜᴀɴɴᴇʟ 3", link: "https://t.me/+4Im9de-6xdxmMjI1" }
+        ]);
+
+    let channelButtons = channels.map((ch, idx) => [
+        Markup.button.url(`📢 ᴊᴏɪɴ ${ch.name || `ᴄʜᴀɴɴᴇʟ ${idx + 1}`}`, ch.link)
+    ]);
+    channelButtons.push([Markup.button.callback("✅ ᴠᴇʀɪꜰʏ / ᴊᴏɪɴᴇᴅ", "verify_channel_join")]);
+
     const msg = `
 ⚠️ <b>ᴄʜᴀɴɴᴇʟ ᴊᴏɪɴ ʀᴇǫᴜɪʀᴇᴅ</b> ⚠️
 ━━━━━━━━━━━━━━━━━━━━━━
-ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴏᴜʀ <b>ᴏғғɪᴄɪᴀʟ ᴛᴇʟᴇɢʀᴀᴍ ᴄʜᴀɴɴᴇʟ</b> ᴛᴏ ᴜsᴇ ᴛʜɪs ʙᴏᴛ:
+ʙᴏᴛ ᴋᴏ ᴜꜱᴇ ᴋᴀʀɴᴇ ᴋᴇ ʟɪʏᴇ <b>ʜᴀᴍᴀʀᴇ ꜱᴀʙʜɪ ᴏꜰꜰɪᴄɪᴀʟ ᴄʜᴀɴɴᴇʟꜱ</b> ᴊᴏɪɴ ᴋᴀʀɴᴀ ᴢᴀʀᴏᴏʀɪ ʜᴀɪ!
 
-📢 <b>Official Channel:</b> ${settings.force_channel_username}
-
-👇 <b>ᴊᴏɪɴ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ʙᴇʟᴏᴡ, ᴛʜᴇɴ ᴄʟɪᴄᴋ 'ᴠᴇʀɪғʏ':</b>
+👇 <b>ɴᴇᴇᴄʜᴇ ᴅɪʏᴇ ɢᴀʏᴇ ᴄʜᴀɴɴᴇʟꜱ ᴋᴏ ᴊᴏɪɴ ᴋᴀʀᴇɪɴ, ꜰɪʀ 'ᴠᴇʀɪꜰʏ' ᴅᴀʙᴀʏᴇɪɴ:</b>
 `;
     return ctx.reply(msg, {
         parse_mode: "HTML",
-        reply_markup: Markup.inlineKeyboard([
-            [Markup.button.url("📢 ᴊᴏɪɴ ᴏғғɪᴄɪᴀʟ ᴄʜᴀɴɴᴇʟ", channelLink)],
-            [Markup.button.callback("✅ ᴠᴇʀɪғʏ / ᴊᴏɪɴᴇᴅ", "verify_channel_join")]
-        ]).reply_markup
+        reply_markup: Markup.inlineKeyboard(channelButtons).reply_markup
     });
 }
 
@@ -95,22 +124,22 @@ function getMainKeyboard() {
 // ─── Send Home Screen ────────────────────────────────────────────────────────
 async function sendHomeScreen(ctx) {
     const user = ctx.from;
-    registerUser(user);
+    const userData = registerUser(user);
+    const bal = getUserBalance(user.id);
 
     const welcomeMsg = `
 👋 <b>ᴡᴇʟᴄᴏᴍᴇ, ${user.first_name || "Player"}!</b> 🔥
-
-<b>ʀᴀᴊ ᴄᴏᴅᴇʀ ғғ — ᴏғғɪᴄɪᴀʟ ᴍᴜʟᴛɪ-ᴜᴛɪʟɪᴛʏ ʙᴏᴛ</b> 🎮
-
 ━━━━━━━━━━━━━━━━━━━━━━
-⚡ <b>ᴀᴠᴀɪʟᴀʙʟᴇ sᴇʀᴠɪᴄᴇs:</b>
-🔑 <b>ʙᴀɴ ʟᴏɢɪɴ:</b> ᴛᴏᴋᴇɴ ᴛᴏ ʟᴏɢɪɴ sᴇssɪᴏɴ & ғɪʟᴇ ɢᴇɴᴇʀᴀᴛᴏʀ
-🔓 <b>ғғ ɪᴅ ᴜɴʙᴀɴ:</b> ʙᴀɴ ᴀᴜᴅɪᴛ & ᴜɴʙᴀɴ ᴘᴀᴄᴋᴀɢᴇs (3ᴅ, 7ᴅ, 30ᴅ, 90ᴅ, ᴘᴇʀᴍ)
-📊 <b>ғғ ɪᴅ ɪɴғᴏ:</b> ғᴜʟʟ ᴘʟᴀʏᴇʀ ᴘʀᴏғɪʟᴇ (ᴀᴠᴀᴛᴀʀ, ʙᴀɴɴᴇʀ, ᴏᴜᴛғɪᴛ, ʀᴀɴᴋ)
-💳 <b>ᴀᴅᴅ ʙᴀʟᴀɴᴄᴇ:</b> ᴡᴀʟʟᴇᴛ ʀᴇᴄʜᴀʀɢᴇ (ᴘᴀʏᴛᴍ ǫʀ) & ɪɴsᴛᴀɴᴛ ᴘᴀʏ
+👤 <b>ɴᴀᴍᴇ:</b> <b>${user.first_name || ""} ${user.last_name || ""}</b>
+🏷️ <b>ᴜꜱᴇʀɴᴀᴍᴇ:</b> ${user.username ? `@${user.username}` : "None"}
+🆔 <b>ᴄʜᴀᴛ ɪᴅ:</b> <code>${user.id}</code>
+📅 <b>ꜰɪʀꜱᴛ ꜱᴛᴀʀᴛ:</b> <code>${userData.joined_formatted || "Just Now"}</code>
+💼 <b>ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ:</b> <b>₹${bal.toFixed(2)}</b>
+🛡️ <b>ꜱᴛᴀᴛᴜꜱ:</b> <b>✅ ᴠᴇʀɪꜰɪᴇᴅ ᴍᴇᴍʙᴇʀ</b>
 ━━━━━━━━━━━━━━━━━━━━━━
 
-👇 <b>ᴛᴀᴘ ᴀ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ sᴛᴀʀᴛ:</b>
+🎮 <b>ʀᴀᴊ ᴄᴏᴅᴇʀ ꜰꜰ — ᴏꜰꜰɪᴄɪᴀʟ ᴍᴜʟᴛɪ-ᴜᴛɪʟɪᴛʏ ʙᴏᴛ</b>
+⚡ <i>ꜱᴇʟᴇᴄᴛ ᴀɴ ᴏᴘᴛɪᴏɴ ꜰʀᴏᴍ ᴛʜᴇ ᴍᴇɴᴜ ʙᴇʟᴏᴡ:</i>
 `;
 
     await ctx.reply(welcomeMsg, {
@@ -123,9 +152,9 @@ async function sendHomeScreen(ctx) {
 bot.start(async (ctx) => {
     userStates.delete(ctx.from.id);
     adminStates.delete(ctx.from.id);
-    const joined = await isUserMember(ctx, ctx.from.id);
-    if (!joined) {
-        return sendForceJoinPrompt(ctx);
+    const unjoined = await getUnjoinedChannels(ctx, ctx.from.id);
+    if (unjoined.length > 0) {
+        return sendForceJoinPrompt(ctx, unjoined);
     }
     return sendHomeScreen(ctx);
 });
@@ -133,13 +162,13 @@ bot.start(async (ctx) => {
 // ─── Verify Channel Callback ─────────────────────────────────────────────────
 bot.action("verify_channel_join", async (ctx) => {
     await ctx.answerCbQuery();
-    const joined = await isUserMember(ctx, ctx.from.id);
-    if (!joined) {
-        return ctx.reply("❌ <b>ʏᴏᴜ ʜᴀᴠᴇ ɴᴏᴛ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ʏᴇᴛ!</b>\n\nᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴏᴜʀ ᴏғғɪᴄɪᴀʟ ᴄʜᴀɴɴᴇʟ ғɪʀsᴛ, ᴛʜᴇɴ ᴄʟɪᴄᴋ ᴠᴇʀɪғʏ.", {
+    const unjoined = await getUnjoinedChannels(ctx, ctx.from.id);
+    if (unjoined.length > 0) {
+        return ctx.reply("❌ <b>ʏᴏᴜ ʜᴀᴠᴇ ɴᴏᴛ ᴊᴏɪɴᴇᴅ ᴀʟʟ ᴄʜᴀɴɴᴇʟꜱ ʏᴇᴛ!</b>\n\nᴘʟᴇᴀꜱᴇ ᴊᴏɪɴ ᴇᴠᴇʀʏ ᴄʜᴀɴɴᴇʟ ᴀʙᴏᴠᴇ, ᴛʜᴇɴ ᴄʟɪᴄᴋ ᴠᴇʀɪꜰʏ.", {
             parse_mode: "HTML"
         });
     }
-    await ctx.reply("🎉 <b>ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟ!</b>\nᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ʙᴏᴛ!", { parse_mode: "HTML" });
+    await ctx.reply("🎉 <b>ᴠᴇʀɪꜰɪᴄᴀᴛɪᴏɴ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟ!</b>\nᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ʙᴏᴛ!", { parse_mode: "HTML" });
     return sendHomeScreen(ctx);
 });
 
@@ -148,9 +177,7 @@ async function handleUnbanRequest(ctx) {
     const joined = await isUserMember(ctx, ctx.from.id);
     if (!joined) return sendForceJoinPrompt(ctx);
 
-    userStates.set(ctx.from.id, { mode: "UNBAN" });
-
-    return ctx.reply(
+    const promptMsg = await ctx.reply(
         "🔓 <b>ғғ ɪᴅ ʙᴀɴ ᴀᴜᴅɪᴛ & ᴜɴʙᴀɴ</b>\n━━━━━━━━━━━━━━━━━━━━━━\n\n🎮 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ʏᴏᴜʀ ғʀᴇᴇ ғɪʀᴇ ᴜɪᴅ:</b>\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>2540951574</code>)</i>",
         {
             parse_mode: "HTML",
@@ -159,6 +186,8 @@ async function handleUnbanRequest(ctx) {
             ]).reply_markup
         }
     );
+
+    userStates.set(ctx.from.id, { mode: "UNBAN", promptMsgId: promptMsg.message_id });
 }
 
 bot.hears(["🔓 FF ID Unban", "🔓 ꜰꜰ ɪᴅ ᴜɴʙᴀɴ"], handleUnbanRequest);
@@ -169,9 +198,7 @@ async function handleLikeRequest(ctx) {
     const joined = await isUserMember(ctx, ctx.from.id);
     if (!joined) return sendForceJoinPrompt(ctx);
 
-    userStates.set(ctx.from.id, { mode: "LIKE" });
-
-    return ctx.reply(
+    const promptMsg = await ctx.reply(
         "🎮 <b>ꜰʀᴇᴇ ꜰɪʀᴇ ʟɪᴋᴇ sᴇʀᴠɪᴄᴇ</b> 🔥\n━━━━━━━━━━━━━━━━━━━━━━\n\n🎯 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ʏᴏᴜʀ ꜰʀᴇᴇ ꜰɪʀᴇ ᴜɪᴅ:</b>\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>2540951574</code>)</i>",
         {
             parse_mode: "HTML",
@@ -180,6 +207,8 @@ async function handleLikeRequest(ctx) {
             ]).reply_markup
         }
     );
+
+    userStates.set(ctx.from.id, { mode: "LIKE", promptMsgId: promptMsg.message_id });
 }
 
 bot.hears("🎮 ꜰʀᴇᴇ ꜰɪʀᴇ ʟɪᴋᴇ 🔥", handleLikeRequest);
@@ -190,9 +219,7 @@ async function handleGloryRequest(ctx) {
     const joined = await isUserMember(ctx, ctx.from.id);
     if (!joined) return sendForceJoinPrompt(ctx);
 
-    userStates.set(ctx.from.id, { mode: "GLORY" });
-
-    return ctx.reply(
+    const promptMsg = await ctx.reply(
         "🛡️ <b>ɢᴜɪʟᴅ ɢʟᴏʀʏ ʙᴏᴏꜱᴛ sᴇʀᴠɪᴄᴇ</b> ⚡\n━━━━━━━━━━━━━━━━━━━━━━\n\n🏰 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ʏᴏᴜʀ ɢᴜɪʟᴅ ᴜɪᴅ / ɪᴅ:</b>\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>3015482910</code>)</i>",
         {
             parse_mode: "HTML",
@@ -201,6 +228,8 @@ async function handleGloryRequest(ctx) {
             ]).reply_markup
         }
     );
+
+    userStates.set(ctx.from.id, { mode: "GLORY", promptMsgId: promptMsg.message_id });
 }
 
 bot.hears(["🛡️ ɢᴜɪʟᴅ ɢʟᴏʀʏ ⚡", "Guild Glory", "ɢᴜɪʟᴅ ɢʟᴏʀʏ"], handleGloryRequest);
@@ -211,9 +240,7 @@ async function handleInfoRequest(ctx) {
     const joined = await isUserMember(ctx, ctx.from.id);
     if (!joined) return sendForceJoinPrompt(ctx);
 
-    userStates.set(ctx.from.id, { mode: "INFO" });
-
-    return ctx.reply(
+    const promptMsg = await ctx.reply(
         "📊 <b>ғғ ɪᴅ ᴘʀᴏғɪʟᴇ ʟᴏᴏᴋᴜᴘ</b>\n━━━━━━━━━━━━━━━━━━━━━━\n\n🔍 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ᴛʜᴇ ғʀᴇᴇ ғɪʀᴇ ᴜɪᴅ:</b>\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>2540951574</code>)</i>",
         {
             parse_mode: "HTML",
@@ -222,6 +249,8 @@ async function handleInfoRequest(ctx) {
             ]).reply_markup
         }
     );
+
+    userStates.set(ctx.from.id, { mode: "INFO", promptMsgId: promptMsg.message_id });
 }
 
 bot.hears(["📊 FF ID Info", "📊 ꜰꜰ ɪᴅ ɪɴꜰᴏ"], handleInfoRequest);
@@ -2460,6 +2489,13 @@ bot.on("text", async (ctx) => {
         const uid = parts[0];
         const settings = getSettings();
         const region = (parts[1] || settings.default_region || "IND").toUpperCase();
+
+        // Auto-delete the prompt message ("Please send UID")
+        if (userState.promptMsgId && ctx.chat) {
+            try {
+                await ctx.telegram.deleteMessage(ctx.chat.id, userState.promptMsgId);
+            } catch (delErr) { }
+        }
 
         if (userState.mode === "UNBAN") {
             return executeUnbanQuery(ctx, uid, region);
