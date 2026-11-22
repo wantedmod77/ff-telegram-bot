@@ -25,6 +25,8 @@ const {
     loadSessions
 } = require("./utils/db");
 const { getPricing, updatePrice, addPackage, deletePackage } = require("./utils/pricing");
+const { getLikePlans, addLikePlan, updateLikePlanPrice, deleteLikePlan } = require("./utils/likePlans");
+const { getGloryPlans, addGloryPlan, updateGloryPlanPrice, deleteGloryPlan } = require("./utils/gloryPlans");
 const { makeUpiUri, sendQrPhoto, verifyPaytmStatus } = require("./utils/paytm");
 
 const bot = new Telegraf(config.BOT_TOKEN);
@@ -83,10 +85,10 @@ async function sendForceJoinPrompt(ctx) {
 // ─── Main Keyboard Helper ────────────────────────────────────────────────────
 function getMainKeyboard() {
     return Markup.keyboard([
-        ["BAN LOGIN", "STOP SESSION"],
-        ["STATUS", "ABOUT THIS BOT"],
-        ["🔓 FF ID Unban", "📊 FF ID Info"],
-        ["💳 Add Balance", "👤 My Wallet"]
+        ["🎮 ꜰʀᴇᴇ ꜰɪʀᴇ ʟɪᴋᴇ 🔥"],
+        ["🛡️ ɢᴜɪʟᴅ ɢʟᴏʀʏ ⚡"],
+        ["🔓 ꜰꜰ ɪᴅ ᴜɴʙᴀɴ", "📊 ꜰꜰ ɪᴅ ɪɴꜰᴏ"],
+        ["💳 ᴀᴅᴅ ʙᴀʟᴀɴᴄᴇ", "👤 ᴍʏ ᴡᴀʟʟᴇᴛ"]
     ]).resize();
 }
 
@@ -159,8 +161,50 @@ async function handleUnbanRequest(ctx) {
     );
 }
 
-bot.hears("🔓 FF ID Unban", handleUnbanRequest);
+bot.hears(["🔓 FF ID Unban", "🔓 ꜰꜰ ɪᴅ ᴜɴʙᴀɴ"], handleUnbanRequest);
 bot.command("unban", handleUnbanRequest);
+
+// ─── Feature: Free Fire Like ─────────────────────────────────────────────────
+async function handleLikeRequest(ctx) {
+    const joined = await isUserMember(ctx, ctx.from.id);
+    if (!joined) return sendForceJoinPrompt(ctx);
+
+    userStates.set(ctx.from.id, { mode: "LIKE" });
+
+    return ctx.reply(
+        "🎮 <b>ꜰʀᴇᴇ ꜰɪʀᴇ ʟɪᴋᴇ sᴇʀᴠɪᴄᴇ</b> 🔥\n━━━━━━━━━━━━━━━━━━━━━━\n\n🎯 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ʏᴏᴜʀ ꜰʀᴇᴇ ꜰɪʀᴇ ᴜɪᴅ:</b>\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>2540951574</code>)</i>",
+        {
+            parse_mode: "HTML",
+            reply_markup: Markup.inlineKeyboard([
+                [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]
+            ]).reply_markup
+        }
+    );
+}
+
+bot.hears("🎮 ꜰʀᴇᴇ ꜰɪʀᴇ ʟɪᴋᴇ 🔥", handleLikeRequest);
+bot.command("like", handleLikeRequest);
+
+// ─── Feature: Guild Glory ────────────────────────────────────────────────────
+async function handleGloryRequest(ctx) {
+    const joined = await isUserMember(ctx, ctx.from.id);
+    if (!joined) return sendForceJoinPrompt(ctx);
+
+    userStates.set(ctx.from.id, { mode: "GLORY" });
+
+    return ctx.reply(
+        "🛡️ <b>ɢᴜɪʟᴅ ɢʟᴏʀʏ ʙᴏᴏꜱᴛ sᴇʀᴠɪᴄᴇ</b> ⚡\n━━━━━━━━━━━━━━━━━━━━━━\n\n🏰 <b>ᴘʟᴇᴀsᴇ sᴇɴᴅ ʏᴏᴜʀ ɢᴜɪʟᴅ ᴜɪᴅ / ɪᴅ:</b>\n\n<i>(ᴇxᴀᴍᴘʟᴇ: <code>3015482910</code>)</i>",
+        {
+            parse_mode: "HTML",
+            reply_markup: Markup.inlineKeyboard([
+                [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]
+            ]).reply_markup
+        }
+    );
+}
+
+bot.hears(["🛡️ ɢᴜɪʟᴅ ɢʟᴏʀʏ ⚡", "Guild Glory", "ɢᴜɪʟᴅ ɢʟᴏʀʏ"], handleGloryRequest);
+bot.command("glory", handleGloryRequest);
 
 // ─── Feature 2: FF ID Info ───────────────────────────────────────────────────
 async function handleInfoRequest(ctx) {
@@ -180,7 +224,7 @@ async function handleInfoRequest(ctx) {
     );
 }
 
-bot.hears("📊 FF ID Info", handleInfoRequest);
+bot.hears(["📊 FF ID Info", "📊 ꜰꜰ ɪᴅ ɪɴꜰᴏ"], handleInfoRequest);
 bot.command("info", handleInfoRequest);
 
 // ─── Feature 3: Status ───────────────────────────────────────────────────────
@@ -312,7 +356,7 @@ bot.hears("STATUS", handleSessionStatusRequest);
 bot.hears("ABOUT THIS BOT", handleAboutThisBotRequest);
 bot.command("about", handleAboutThisBotRequest);
 
-bot.hears("👤 My Wallet", handleStatusRequest);
+bot.hears(["👤 My Wallet", "👤 ᴍʏ ᴡᴀʟʟᴇᴛ"], handleStatusRequest);
 bot.hears("👤 Status", handleStatusRequest);
 bot.command("status", handleStatusRequest);
 
@@ -354,7 +398,7 @@ async function handleAddBalanceMenu(ctx) {
     return ctx.reply(msg, { parse_mode: "HTML", reply_markup: kb.reply_markup });
 }
 
-bot.hears("💳 Add Balance", handleAddBalanceMenu);
+bot.hears(["💳 Add Balance", "💳 ᴀᴅᴅ ʙᴀʟᴀɴᴄᴇ"], handleAddBalanceMenu);
 bot.command("balance", handleAddBalanceMenu);
 bot.action("prompt_add_balance", async (ctx) => {
     await ctx.answerCbQuery();
@@ -502,6 +546,328 @@ bot.action(/^unban_yes_(.+)$/, async (ctx) => {
         reply_markup: Markup.inlineKeyboard(buttonRows).reply_markup
     });
 });
+
+// ─── Free Fire Like Plan Selection & Payment ─────────────────────────────────
+bot.action(/^like_choose_(.+)$/, async (ctx) => {
+    await ctx.answerCbQuery();
+    const uid = ctx.match[1];
+    const plans = getLikePlans();
+
+    const noteMsg = `
+🎮 <b>ꜰʀᴇᴇ ꜰɪʀᴇ ʟɪᴋᴇ ᴘʟᴀɴꜱ</b> 🔥
+━━━━━━━━━━━━━━━━━━━━━━
+🆔 <b>ꜰʀᴇᴇ ꜰɪʀᴇ ᴜɪᴅ:</b> <code>${uid}</code>
+
+⚡ <b>ꜱᴇʟᴇᴄᴛ ʏᴏᴜʀ ᴅᴇꜱɪʀᴇᴅ ʟɪᴋᴇ ᴘᴀᴄᴋᴀɢᴇ:</b>
+<i>(ʟɪᴋᴇꜱ ᴡɪʟʟ ʙᴇ ᴅᴇʟɪᴠᴇʀᴇᴅ ᴅᴀɪʟʏ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ!)</i>
+━━━━━━━━━━━━━━━━━━━━━━
+`;
+
+    const buttonRows = [];
+    for (const [key, plan] of Object.entries(plans)) {
+        buttonRows.push([
+            Markup.button.callback(`🔥 ${plan.label || `${plan.days} ᴅᴀʏꜱ — ${plan.likes} ʟɪᴋᴇꜱ (₹${plan.price})`}`, `like_pkg_${key}_${uid}`)
+        ]);
+    }
+    buttonRows.push([Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]);
+
+    await ctx.reply(noteMsg, {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard(buttonRows).reply_markup
+    });
+});
+
+bot.action(/^like_pkg_(.+)_(.+)$/, async (ctx) => {
+    await ctx.answerCbQuery();
+    const planKey = ctx.match[1];
+    const ffUid = ctx.match[2];
+    const plans = getLikePlans();
+    const plan = plans[planKey] || { label: "1 Day Like", price: 25, days: 1, likes: "220+" };
+    const user = ctx.from;
+    registerUser(user);
+
+    const userBal = getUserBalance(user.id);
+
+    if (userBal >= plan.price) {
+        const askMsg = `
+📋 <b>ꜱᴇʟᴇᴄᴛᴇᴅ ʟɪᴋᴇ ᴘʟᴀɴ:</b>
+━━━━━━━━━━━━━━━━━━━━━━
+🆔 <b>ꜰʀᴇᴇ ꜰɪʀᴇ ᴜɪᴅ:</b> <code>${ffUid}</code>
+⚡ <b>ᴘʟᴀɴ:</b> <b>${plan.label}</b>
+💰 <b>ᴘᴀʏᴀʙʟᴇ ᴀᴍᴏᴜɴᴛ:</b> <b>₹${plan.price}</b>
+💼 <b>ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ:</b> <b>₹${userBal.toFixed(2)}</b>
+━━━━━━━━━━━━━━━━━━━━━━
+
+⚡ <b>ʏᴏᴜ ʜᴀᴠᴇ ꜱᴜꜰꜰɪᴄɪᴇɴᴛ ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ!</b>
+ʏᴏᴜ ᴄᴀɴ ᴘᴀʏ ɪɴꜱᴛᴀɴᴛʟʏ ꜰʀᴏᴍ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ ᴏʀ ꜱᴄᴀɴ ᴘᴀʏᴛᴍ ǫʀ ᴄᴏᴅᴇ:
+`;
+        return ctx.reply(askMsg, {
+            parse_mode: "HTML",
+            reply_markup: Markup.inlineKeyboard([
+                [Markup.button.callback(`⚡ ᴘᴀʏ ꜰʀᴏᴍ ᴡᴀʟʟᴇᴛ (₹${plan.price})`, `like_pay_wallet_${planKey}_${ffUid}`)],
+                [Markup.button.callback(`💳 ᴘᴀʏ ᴠɪᴀ ᴘᴀʏᴛᴍ ǫʀ (₹${plan.price})`, `like_pay_qr_${planKey}_${ffUid}`)],
+                [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]
+            ]).reply_markup
+        });
+    }
+
+    return generateLikeQrPayment(ctx, planKey, ffUid, plan);
+});
+
+bot.action(/^like_pay_wallet_(.+)_(.+)$/, async (ctx) => {
+    await ctx.answerCbQuery();
+    const planKey = ctx.match[1];
+    const ffUid = ctx.match[2];
+    const plans = getLikePlans();
+    const plan = plans[planKey] || { label: "1 Day Like", price: 25, days: 1, likes: "220+" };
+    const user = ctx.from;
+
+    const remainingBal = deductBalance(user.id, plan.price);
+    if (remainingBal === false) {
+        return ctx.reply("❌ ɪɴꜱᴜꜰꜰɪᴄɪᴇɴᴛ ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ. ᴘʟᴇᴀꜱᴇ ᴘᴀʏ ᴠɪᴀ ǫʀ ᴄᴏᴅᴇ.", {
+            reply_markup: Markup.inlineKeyboard([[Markup.button.callback("💳 ᴘᴀʏ ᴠɪᴀ ǫʀ", `like_pay_qr_${planKey}_${ffUid}`)]]).reply_markup
+        });
+    }
+
+    const order = createOrder({
+        userId: user.id,
+        username: user.username ? `@${user.username}` : "No username",
+        firstName: user.first_name || "Customer",
+        ffUid: ffUid,
+        pkgKey: planKey,
+        pkgLabel: plan.label,
+        amount: plan.price,
+        days: plan.days,
+        likes: plan.likes,
+        purpose: "like"
+    });
+
+    await handleSuccessfulPayment(ctx.telegram, order, "WALLET_BALANCE");
+    return ctx.reply(`✅ <b>₹${plan.price} ᴅᴇᴅᴜᴄᴛᴇᴅ ꜰʀᴏᴍ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ!</b>\n💼 ʀᴇᴍᴀɪɴɪɴɢ ʙᴀʟᴀɴᴄᴇ: <b>₹${remainingBal.toFixed(2)}</b>\n\n🎉 ʏᴏᴜʀ ꜰʀᴇᴇ ꜰɪʀᴇ ᴜɪᴅ ʜᴀꜱ ʙᴇᴇɴ ᴀᴅᴅᴇᴅ ꜰᴏʀ ʟɪᴋᴇ ᴅᴇʟɪᴠᴇʀʏ!`, {
+        parse_mode: "HTML"
+    });
+});
+
+bot.action(/^like_pay_qr_(.+)_(.+)$/, async (ctx) => {
+    await ctx.answerCbQuery();
+    const planKey = ctx.match[1];
+    const ffUid = ctx.match[2];
+    const plans = getLikePlans();
+    const plan = plans[planKey] || { label: "1 Day Like", price: 25, days: 1, likes: "220+" };
+    return generateLikeQrPayment(ctx, planKey, ffUid, plan);
+});
+
+async function generateLikeQrPayment(ctx, planKey, ffUid, plan) {
+    try { await ctx.sendChatAction("upload_photo"); } catch { }
+    const user = ctx.from;
+    const gw = getGateway();
+
+    const order = createOrder({
+        userId: user.id,
+        username: user.username ? `@${user.username}` : "No username",
+        firstName: user.first_name || "Customer",
+        ffUid: ffUid,
+        pkgKey: planKey,
+        pkgLabel: plan.label,
+        amount: plan.price,
+        days: plan.days,
+        likes: plan.likes,
+        purpose: "like"
+    });
+
+    const upiId = gw.paytm.upi_id || "rajcoderff@paytm";
+    const merchantName = gw.paytm.merchant_name || "FREE FIRE SERVICES";
+    const upiUri = makeUpiUri(upiId, merchantName, plan.price, order.id);
+
+    const caption = `
+━━━━━━━━━━━━━━━━━━━━━━━
+  🎮 <b>ꜰʀᴇᴇ ꜰɪʀᴇ ʟɪᴋᴇ ᴘᴀʏᴍᴇɴᴛ</b> 🔥
+━━━━━━━━━━━━━━━━━━━━━━━
+
+🆔 <b>ꜰʀᴇᴇ ꜰɪʀᴇ ᴜɪᴅ:</b> <code>${ffUid}</code>
+⚡ <b>ᴘʟᴀɴ:</b> <b>${plan.label}</b>
+💰 <b>ᴀᴍᴏᴜɴᴛ ᴛᴏ ᴘᴀʏ:</b> <b>₹${plan.price}</b>
+🔐 <b>ᴏʀᴅᴇʀ ʀᴇꜰᴇʀᴇɴᴄᴇ:</b> <code>${order.id}</code>
+💳 <b>ᴘᴀʏᴇᴇ ᴜᴘɪ:</b> <code>${upiId}</code>
+⏱️ <b>ᴠᴀʟɪᴅɪᴛʏ:</b> 15 ᴍɪɴᴜᴛᴇꜱ
+
+━━━━━━━━━━━━━━━━━━━━━━━
+📝 <b>ᴘᴀʏᴍᴇɴᴛ ɪɴꜱᴛʀᴜᴄᴛɪᴏɴꜱ:</b>
+1️⃣ ꜱᴄᴀɴ ᴛʜɪꜱ ǫʀ ᴄᴏᴅᴇ ᴜꜱɪɴɢ <b>ᴘᴀʏᴛᴍ, ɢᴏᴏɢʟᴇ ᴘᴀʏ, ᴘʜᴏɴᴇᴘᴇ</b> ᴏʀ ᴀɴʏ ᴜᴘɪ ᴀᴘᴘ.
+2️⃣ ᴘᴀʏ <b>ᴇxᴀᴄᴛʟʏ ₹${plan.price}</b>.
+3️⃣ ᴀꜰᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ, ᴛᴀᴘ <b>[🔄 ᴠᴇʀɪꜰʏ ᴘᴀʏᴍᴇɴᴛ]</b> ʙᴇʟᴏᴡ.
+
+⚡ <b>ᴀᴜᴛᴏ-ᴠᴇʀɪꜰʏ:</b> ʏᴏᴜʀ ᴜɪᴅ ᴡɪʟʟ ʙᴇ ᴀᴄᴛɪᴠᴀᴛᴇᴅ ɪɴꜱᴛᴀɴᴛʟʏ ꜰᴏʀ ʟɪᴋᴇꜱ!
+`;
+
+    const markup = Markup.inlineKeyboard([
+        [Markup.button.callback("🔄 ᴠᴇʀɪꜰʏ ᴘᴀʏᴍᴇɴᴛ", `check_pay_${order.id}`)],
+        [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", `cancel_pay_${order.id}`)]
+    ]).reply_markup;
+
+    return await sendQrPhoto(ctx, upiUri, caption, markup);
+}
+
+// ─── Guild Glory Plan Selection & Payment ────────────────────────────────────
+bot.action(/^glory_choose_(.+)$/, async (ctx) => {
+    await ctx.answerCbQuery();
+    const guildUid = ctx.match[1];
+    const plans = getGloryPlans();
+
+    const noteMsg = `
+🛡️ <b>ɢᴜɪʟᴅ ɢʟᴏʀʏ ᴘʟᴀɴꜱ</b> ⚡
+━━━━━━━━━━━━━━━━━━━━━━
+🏰 <b>ɢᴜɪʟᴅ ᴜɪᴅ:</b> <code>${guildUid}</code>
+
+⚡ <b>ꜱᴇʟᴇᴄᴛ ʏᴏᴜʀ ɢʟᴏʀʏ ʙᴏᴏꜱᴛ ᴘᴀᴄᴋᴀɢᴇ:</b>
+<i>(ʙᴏᴛꜱ ᴡɪʟʟ ʙᴇ ᴀꜱꜱɪɢɴᴇᴅ ᴛᴏ ʙᴏᴏꜱᴛ ʏᴏᴜʀ ɢᴜɪʟᴅ ɢʟᴏʀʏ!)</i>
+━━━━━━━━━━━━━━━━━━━━━━
+`;
+
+    const buttonRows = [];
+    for (const [key, plan] of Object.entries(plans)) {
+        buttonRows.push([
+            Markup.button.callback(`🛡️ ${plan.label || `${plan.bots} ʙᴏᴛ — ${plan.glory} ɢʟᴏʀʏ (₹${plan.price})`}`, `glory_pkg_${key}_${guildUid}`)
+        ]);
+    }
+    buttonRows.push([Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]);
+
+    await ctx.reply(noteMsg, {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard(buttonRows).reply_markup
+    });
+});
+
+bot.action(/^glory_pkg_(.+)_(.+)$/, async (ctx) => {
+    await ctx.answerCbQuery();
+    const planKey = ctx.match[1];
+    const guildUid = ctx.match[2];
+    const plans = getGloryPlans();
+    const plan = plans[planKey] || { label: "1 Bot Glory", price: 250, bots: 1, glory: "2400" };
+    const user = ctx.from;
+    registerUser(user);
+
+    const userBal = getUserBalance(user.id);
+
+    if (userBal >= plan.price) {
+        const askMsg = `
+📋 <b>ꜱᴇʟᴇᴄᴛᴇᴅ ɢᴜɪʟᴅ ɢʟᴏʀʏ ᴘʟᴀɴ:</b>
+━━━━━━━━━━━━━━━━━━━━━━
+🏰 <b>ɢᴜɪʟᴅ ᴜɪᴅ:</b> <code>${guildUid}</code>
+⚡ <b>ᴘʟᴀɴ:</b> <b>${plan.label}</b>
+💰 <b>ᴘᴀʏᴀʙʟᴇ ᴀᴍᴏᴜɴᴛ:</b> <b>₹${plan.price}</b>
+💼 <b>ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ:</b> <b>₹${userBal.toFixed(2)}</b>
+━━━━━━━━━━━━━━━━━━━━━━
+
+⚡ <b>ʏᴏᴜ ʜᴀᴠᴇ ꜱᴜꜰꜰɪᴄɪᴇɴᴛ ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ!</b>
+ʏᴏᴜ ᴄᴀɴ ᴘᴀʏ ɪɴꜱᴛᴀɴᴛʟʏ ꜰʀᴏᴍ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ ᴏʀ ꜱᴄᴀɴ ᴘᴀʏᴛᴍ ǫʀ ᴄᴏᴅᴇ:
+`;
+        return ctx.reply(askMsg, {
+            parse_mode: "HTML",
+            reply_markup: Markup.inlineKeyboard([
+                [Markup.button.callback(`⚡ ᴘᴀʏ ꜰʀᴏᴍ ᴡᴀʟʟᴇᴛ (₹${plan.price})`, `glory_pay_wallet_${planKey}_${guildUid}`)],
+                [Markup.button.callback(`💳 ᴘᴀʏ ᴠɪᴀ ᴘᴀʏᴛᴍ ǫʀ (₹${plan.price})`, `glory_pay_qr_${planKey}_${guildUid}`)],
+                [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]
+            ]).reply_markup
+        });
+    }
+
+    return generateGloryQrPayment(ctx, planKey, guildUid, plan);
+});
+
+bot.action(/^glory_pay_wallet_(.+)_(.+)$/, async (ctx) => {
+    await ctx.answerCbQuery();
+    const planKey = ctx.match[1];
+    const guildUid = ctx.match[2];
+    const plans = getGloryPlans();
+    const plan = plans[planKey] || { label: "1 Bot Glory", price: 250, bots: 1, glory: "2400" };
+    const user = ctx.from;
+
+    const remainingBal = deductBalance(user.id, plan.price);
+    if (remainingBal === false) {
+        return ctx.reply("❌ ɪɴꜱᴜꜰꜰɪᴄɪᴇɴᴛ ᴡᴀʟʟᴇᴛ ʙᴀʟᴀɴᴄᴇ. ᴘʟᴇᴀꜱᴇ ᴘᴀʏ ᴠɪᴀ ǫʀ ᴄᴏᴅᴇ.", {
+            reply_markup: Markup.inlineKeyboard([[Markup.button.callback("💳 ᴘᴀʏ ᴠɪᴀ ǫʀ", `glory_pay_qr_${planKey}_${guildUid}`)]]).reply_markup
+        });
+    }
+
+    const order = createOrder({
+        userId: user.id,
+        username: user.username ? `@${user.username}` : "No username",
+        firstName: user.first_name || "Customer",
+        ffUid: guildUid,
+        pkgKey: planKey,
+        pkgLabel: plan.label,
+        amount: plan.price,
+        bots: plan.bots,
+        glory: plan.glory,
+        purpose: "glory"
+    });
+
+    await handleSuccessfulPayment(ctx.telegram, order, "WALLET_BALANCE");
+    return ctx.reply(`✅ <b>₹${plan.price} ᴅᴇᴅᴜᴄᴛᴇᴅ ꜰʀᴏᴍ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ!</b>\n💼 ʀᴇᴍᴀɪɴɪɴɢ ʙᴀʟᴀɴᴄᴇ: <b>₹${remainingBal.toFixed(2)}</b>\n\n🎉 ʏᴏᴜʀ ɢᴜɪʟᴅ ᴜɪᴅ ʜᴀꜱ ʙᴇᴇɴ ᴀᴅᴅᴇᴅ ꜰᴏʀ ɢʟᴏʀʏ ʙᴏᴏꜱᴛ!`, {
+        parse_mode: "HTML"
+    });
+});
+
+bot.action(/^glory_pay_qr_(.+)_(.+)$/, async (ctx) => {
+    await ctx.answerCbQuery();
+    const planKey = ctx.match[1];
+    const guildUid = ctx.match[2];
+    const plans = getGloryPlans();
+    const plan = plans[planKey] || { label: "1 Bot Glory", price: 250, bots: 1, glory: "2400" };
+    return generateGloryQrPayment(ctx, planKey, guildUid, plan);
+});
+
+async function generateGloryQrPayment(ctx, planKey, guildUid, plan) {
+    try { await ctx.sendChatAction("upload_photo"); } catch { }
+    const user = ctx.from;
+    const gw = getGateway();
+
+    const order = createOrder({
+        userId: user.id,
+        username: user.username ? `@${user.username}` : "No username",
+        firstName: user.first_name || "Customer",
+        ffUid: guildUid,
+        pkgKey: planKey,
+        pkgLabel: plan.label,
+        amount: plan.price,
+        bots: plan.bots,
+        glory: plan.glory,
+        purpose: "glory"
+    });
+
+    const upiId = gw.paytm.upi_id || "rajcoderff@paytm";
+    const merchantName = gw.paytm.merchant_name || "FREE FIRE SERVICES";
+    const upiUri = makeUpiUri(upiId, merchantName, plan.price, order.id);
+
+    const caption = `
+━━━━━━━━━━━━━━━━━━━━━━━
+  🛡️ <b>ɢᴜɪʟᴅ ɢʟᴏʀʏ ʙᴏᴏꜱᴛ ᴘᴀʏᴍᴇɴᴛ</b> ⚡
+━━━━━━━━━━━━━━━━━━━━━━━
+
+🏰 <b>ɢᴜɪʟᴅ ᴜɪᴅ:</b> <code>${guildUid}</code>
+⚡ <b>ᴘʟᴀɴ:</b> <b>${plan.label}</b>
+💰 <b>ᴀᴍᴏᴜɴᴛ ᴛᴏ ᴘᴀʏ:</b> <b>₹${plan.price}</b>
+🔐 <b>ᴏʀᴅᴇʀ ʀᴇꜰᴇʀᴇɴᴄᴇ:</b> <code>${order.id}</code>
+💳 <b>ᴘᴀʏᴇᴇ ᴜᴘɪ:</b> <code>${upiId}</code>
+⏱️ <b>ᴠᴀʟɪᴅɪᴛʏ:</b> 15 ᴍɪɴᴜᴛᴇꜱ
+
+━━━━━━━━━━━━━━━━━━━━━━━
+📝 <b>ᴘᴀʏᴍᴇɴᴛ ɪɴꜱᴛʀᴜᴄᴛɪᴏɴꜱ:</b>
+1️⃣ ꜱᴄᴀɴ ᴛʜɪꜱ ǫʀ ᴄᴏᴅᴇ ᴜꜱɪɴɢ <b>ᴘᴀʏᴛᴍ, ɢᴏᴏɢʟᴇ ᴘᴀʏ, ᴘʜᴏɴᴇᴘᴇ</b> ᴏʀ ᴀɴʏ ᴜᴘɪ ᴀᴘᴘ.
+2️⃣ ᴘᴀʏ <b>ᴇxᴀᴄᴛʟʏ ₹${plan.price}</b>.
+3️⃣ ᴀꜰᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ, ᴛᴀᴘ <b>[🔄 ᴠᴇʀɪꜰʏ ᴘᴀʏᴍᴇɴᴛ]</b> ʙᴇʟᴏᴡ.
+
+⚡ <b>ᴀᴜᴛᴏ-ᴠᴇʀɪꜰʏ:</b> ʏᴏᴜʀ ɢᴜɪʟᴅ ᴡɪʟʟ ʙᴇ ᴀᴅᴅᴇᴅ ɪɴꜱᴛᴀɴᴛʟʏ ꜰᴏʀ ɢʟᴏʀʏ!
+`;
+
+    const markup = Markup.inlineKeyboard([
+        [Markup.button.callback("🔄 ᴠᴇʀɪꜰʏ ᴘᴀʏᴍᴇɴᴛ", `check_pay_${order.id}`)],
+        [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", `cancel_pay_${order.id}`)]
+    ]).reply_markup;
+
+    return await sendQrPhoto(ctx, upiUri, caption, markup);
+}
 
 // ─── Package Selection -> Check Wallet or Show Paytm QR ──────────────────────
 bot.action(/^pkg_(.+)_(.+)$/, async (ctx) => {
@@ -750,7 +1116,125 @@ ${txnId ? `🔖 <b>Txn ID:</b> <code>${txnId}</code>\n` : ""}⏱️ <b>Payment T
             } catch (adminErr) { }
         }
 
-    } else {
+        } else if (order.purpose === "like") {
+        // ─── Free Fire Like Flow ─────────────────────────────────────────────
+        // 1. Notify Customer
+        try {
+            const supportLink = settings.support_link || "https://t.me/RajCoderFf";
+            const userMsg = `
+━━━━━━━━━━━━━━━━━━━━━━━
+  🎉 <b>ʟɪᴋᴇ ᴏʀᴅᴇʀ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!</b> 🔥
+━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ <b>ʏᴏᴜʀ ᴘᴀʏᴍᴇɴᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴠᴇʀɪꜰɪᴇᴅ!</b>
+
+🆔 <b>ꜰʀᴇᴇ ꜰɪʀᴇ ᴜɪᴅ:</b> <code>${order.ff_uid}</code>
+⚡ <b>ᴘʟᴀɴ:</b> <b>${order.package_label}</b>
+📅 <b>ᴅᴜʀᴀᴛɪᴏɴ:</b> <b>${order.days || 1} ᴅᴀʏꜱ</b>
+👍 <b>ᴛᴏᴛᴀʟ ʟɪᴋᴇꜱ:</b> <b>${order.likes || "220+"}</b>
+💰 <b>ᴀᴍᴏᴜɴᴛ ᴘᴀɪᴅ:</b> <b>₹${order.amount}</b>
+🧾 <b>ᴏʀᴅᴇʀ ʀᴇꜰ:</b> <code>${order.id}</code>
+⏱️ <b>ᴅᴀᴛᴇ & ᴛɪᴍᴇ:</b> <code>${updatedOrder?.paid_formatted}</code>
+
+━━━━━━━━━━━━━━━━━━━━━━━
+⚡ <b>ꜱᴛᴀᴛᴜꜱ:</b> ʏᴏᴜʀ ᴜɪᴅ ʜᴀꜱ ʙᴇᴇɴ ᴀᴅᴅᴇᴅ ᴛᴏ ᴛʜᴇ ʟɪᴋᴇ ꜱᴇʀᴠᴇʀ! ʟɪᴋᴇꜱ ᴡɪʟʟ ʙᴇ ꜱᴇɴᴛ ᴅᴀɪʟʏ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ!
+━━━━━━━━━━━━━━━━━━━━━━━
+
+💬 <b>ɪꜰ ʏᴏᴜ ꜰᴀᴄᴇ ᴀɴʏ ɪꜱꜱᴜᴇꜱ, ᴄᴏɴᴛᴀᴄᴛ ꜱᴜᴘᴘᴏʀᴛ ʙᴇʟᴏᴡ:</b>
+`;
+            await telegram.sendMessage(order.user_id, userMsg, {
+                parse_mode: "HTML",
+                reply_markup: Markup.inlineKeyboard([
+                    [Markup.button.url("💬 ᴄᴏɴᴛᴀᴄᴛ ꜱᴜᴘᴘᴏʀᴛ", supportLink)]
+                ]).reply_markup
+            });
+        } catch (err) { }
+
+        // 2. Alert Admin
+        for (const adminId of adminIds) {
+            try {
+                const adminAlert = `
+━━━━━━━━━━━━━━━━━━━━━━━
+  🚨 <b>NEW LIKE ORDER PAYMENT RECEIVED</b> 🔥
+━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 <b>Customer:</b> ${order.first_name} (${order.username})
+🆔 <b>Telegram Chat ID:</b> <code>${order.user_id}</code>
+
+🎮 <b>Free Fire UID:</b> <code>${order.ff_uid}</code>
+⚡ <b>Like Plan:</b> <b>${order.package_label}</b>
+📅 <b>Duration:</b> <b>${order.days || 1} Day(s)</b>
+👍 <b>Likes Target:</b> <b>${order.likes || "220+"}</b>
+💰 <b>Amount Received:</b> <b>₹${order.amount}</b>
+💳 <b>Method:</b> <code>${txnId === "WALLET_BALANCE" ? "WALLET BALANCE" : "PAYTM UPI"}</code>
+🧾 <b>Order Ref:</b> <code>${order.id}</code>
+${txnId && txnId !== "WALLET_BALANCE" ? `🔖 <b>Txn ID:</b> <code>${txnId}</code>\n` : ""}⏱️ <b>Payment Time:</b> <code>${updatedOrder?.paid_formatted}</code>
+━━━━━━━━━━━━━━━━━━━━━━━
+`;
+                await telegram.sendMessage(adminId, adminAlert, { parse_mode: "HTML" });
+            } catch (adminErr) { }
+        }
+
+    } else if (order.purpose === "glory") {
+        // ─── Guild Glory Flow ────────────────────────────────────────────────
+        // 1. Notify Customer
+        try {
+            const supportLink = settings.support_link || "https://t.me/RajCoderFf";
+            const userMsg = `
+━━━━━━━━━━━━━━━━━━━━━━━
+  🎉 <b>ɢᴜɪʟᴅ ɢʟᴏʀʏ ᴏʀᴅᴇʀ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!</b> 🛡️⚡
+━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ <b>ʏᴏᴜʀ ᴘᴀʏᴍᴇɴᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴠᴇʀɪꜰɪᴇᴅ!</b>
+
+🏰 <b>ɢᴜɪʟᴅ ᴜɪᴅ:</b> <code>${order.ff_uid}</code>
+⚡ <b>ᴘʟᴀɴ:</b> <b>${order.package_label}</b>
+🤖 <b>ʙᴏᴛꜱ ᴀꜱꜱɪɢɴᴇᴅ:</b> <b>${order.bots || 1} ʙᴏᴛ(ꜱ)</b>
+📈 <b>ɢʟᴏʀʏ ᴛᴀʀɢᴇᴛ:</b> <b>${order.glory || "2400"} ɢʟᴏʀʏ</b>
+💰 <b>ᴀᴍᴏᴜɴᴛ ᴘᴀɪᴅ:</b> <b>₹${order.amount}</b>
+🧾 <b>ᴏʀᴅᴇʀ ʀᴇꜰ:</b> <code>${order.id}</code>
+⏱️ <b>ᴅᴀᴛᴇ & ᴛɪᴍᴇ:</b> <code>${updatedOrder?.paid_formatted}</code>
+
+━━━━━━━━━━━━━━━━━━━━━━━
+⚡ <b>ꜱᴛᴀᴛᴜꜱ:</b> ʏᴏᴜʀ ɢᴜɪʟᴅ ʜᴀꜱ ʙᴇᴇɴ ᴀᴅᴅᴇᴅ ᴛᴏ ᴛʜᴇ ɢʟᴏʀʏ ʙᴏᴏꜱᴛ ꜱʏꜱᴛᴇᴍ! ʙᴏᴛꜱ ᴡɪʟʟ ꜱᴛᴀʀᴛ ᴘᴜꜱʜɪɴɢ ɢʟᴏʀʏ!
+━━━━━━━━━━━━━━━━━━━━━━━
+
+💬 <b>ɪꜰ ʏᴏᴜ ꜰᴀᴄᴇ ᴀɴʏ ɪꜱꜱᴜᴇꜱ, ᴄᴏɴᴛᴀᴄᴛ ꜱᴜᴘᴘᴏʀᴛ ʙᴇʟᴏᴡ:</b>
+`;
+            await telegram.sendMessage(order.user_id, userMsg, {
+                parse_mode: "HTML",
+                reply_markup: Markup.inlineKeyboard([
+                    [Markup.button.url("💬 ᴄᴏɴᴛᴀᴄᴛ ꜱᴜᴘᴘᴏʀᴛ", supportLink)]
+                ]).reply_markup
+            });
+        } catch (err) { }
+
+        // 2. Alert Admin
+        for (const adminId of adminIds) {
+            try {
+                const adminAlert = `
+━━━━━━━━━━━━━━━━━━━━━━━
+  🚨 <b>NEW GUILD GLORY ORDER RECEIVED</b> 🛡️⚡
+━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 <b>Customer:</b> ${order.first_name} (${order.username})
+🆔 <b>Telegram Chat ID:</b> <code>${order.user_id}</code>
+
+🏰 <b>Guild UID:</b> <code>${order.ff_uid}</code>
+⚡ <b>Glory Plan:</b> <b>${order.package_label}</b>
+🤖 <b>Bots Count:</b> <b>${order.bots || 1} Bot(s)</b>
+📈 <b>Glory Target:</b> <b>${order.glory || "2400"} Glory</b>
+💰 <b>Amount Received:</b> <b>₹${order.amount}</b>
+💳 <b>Method:</b> <code>${txnId === "WALLET_BALANCE" ? "WALLET BALANCE" : "PAYTM UPI"}</code>
+🧾 <b>Order Ref:</b> <code>${order.id}</code>
+${txnId && txnId !== "WALLET_BALANCE" ? `🔖 <b>Txn ID:</b> <code>${txnId}</code>\n` : ""}⏱️ <b>Payment Time:</b> <code>${updatedOrder?.paid_formatted}</code>
+━━━━━━━━━━━━━━━━━━━━━━━
+`;
+                await telegram.sendMessage(adminId, adminAlert, { parse_mode: "HTML" });
+            } catch (adminErr) { }
+        }
+
+} else {
         // ─── FF ID Unban Flow ────────────────────────────────────────────────
         // 1. Notify Customer
         try {
@@ -928,6 +1412,73 @@ async function executeUnbanQuery(ctx, uid, region = "IND") {
     }
 }
 
+async function executeLikeQuery(ctx, uid, region = "IND") {
+    incrementQueries(ctx.from.id);
+    const loadingMsg = await ctx.reply("🔍 <b>ꜰᴇᴛᴄʜɪɴɢ ᴘʟᴀʏᴇʀ ᴘʀᴏꜰɪʟᴇ...</b> <i>ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ...</i>", {
+        parse_mode: "HTML"
+    });
+
+    try {
+        const result = await getPlayerInfo(uid, region);
+        try { await ctx.telegram.deleteMessage(ctx.chat.id, loadingMsg.message_id); } catch { }
+
+        if (!result.success) {
+            return ctx.reply(`❌ <b>ᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ</b>\n\n${result.error}`, { parse_mode: "HTML" });
+        }
+
+        const preview = formatUnbanPreview(result.data, uid, region);
+
+        const keyboard = Markup.inlineKeyboard([
+            [Markup.button.callback("🔥 ɢᴇᴛ ʟɪᴋᴇꜱ ɴᴏᴡ", `like_choose_${uid}`)],
+            [Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]
+        ]);
+
+        if (preview.bannerUrl) {
+            try {
+                await ctx.replyWithPhoto(preview.bannerUrl);
+            } catch (e) { }
+        }
+
+        await ctx.reply(preview.text, {
+            parse_mode: "HTML",
+            reply_markup: keyboard.reply_markup
+        });
+
+    } catch (err) {
+        console.error("Like query error:", err.message);
+        try { await ctx.telegram.deleteMessage(ctx.chat.id, loadingMsg.message_id); } catch { }
+        ctx.reply("⚠️ ᴇʀʀᴏʀ ꜰᴇᴛᴄʜɪɴɢ ᴘʟᴀʏᴇʀ. ᴘʟᴇᴀsᴇ ᴛʀʏ ᴀɢᴀɪɴ ʟᴀᴛᴇʀ.");
+    }
+}
+
+async function executeGloryQuery(ctx, guildUid) {
+    incrementQueries(ctx.from.id);
+    const plans = getGloryPlans();
+
+    const msg = `
+🏰 <b>ɢᴜɪʟᴅ ᴠᴇʀɪꜰɪᴇᴅ &amp; ʀᴇᴀᴅʏ!</b> 🛡️
+━━━━━━━━━━━━━━━━━━━━━━
+🆔 <b>ɢᴜɪʟᴅ ᴜɪᴅ:</b> <code>${guildUid}</code>
+
+⚡ <b>ꜱᴇʟᴇᴄᴛ ʏᴏᴜʀ ɢʟᴏʀʏ ʙᴏᴏꜱᴛ ᴘᴀᴄᴋᴀɢᴇ:</b>
+<i>(ʙᴏᴛꜱ ᴡɪʟʟ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ᴊᴏɪɴ ᴏʀ ᴘᴜꜱʜ ɢʟᴏʀʏ ᴛᴏ ʏᴏᴜʀ ɢᴜɪʟᴅ!)</i>
+━━━━━━━━━━━━━━━━━━━━━━
+`;
+
+    const buttonRows = [];
+    for (const [key, plan] of Object.entries(plans)) {
+        buttonRows.push([
+            Markup.button.callback(`🛡️ ${plan.label || `${plan.bots} ʙᴏᴛ — ${plan.glory} ɢʟᴏʀʏ (₹${plan.price})`}`, `glory_pkg_${key}_${guildUid}`)
+        ]);
+    }
+    buttonRows.push([Markup.button.callback("❌ ᴄᴀɴᴄᴇʟ", "cancel_action")]);
+
+    return ctx.reply(msg, {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard(buttonRows).reply_markup
+    });
+}
+
 // ─── Callback for 'Check Another UID' ────────────────────────────────────────
 bot.action("prompt_info", async (ctx) => {
     await ctx.answerCbQuery();
@@ -942,7 +1493,11 @@ function renderAdminMenuKeyboard() {
     return Markup.inlineKeyboard([
         [
             Markup.button.callback("📢 Channel & Force Join", "adm_channels"),
-            Markup.button.callback("💰 Packages & Prices", "adm_prices")
+            Markup.button.callback("💰 Unban Prices", "adm_prices")
+        ],
+        [
+            Markup.button.callback("🔥 Like Plans Setup", "adm_like_plans"),
+            Markup.button.callback("🛡️ Guild Glory Setup", "adm_glory_plans")
         ],
         [
             Markup.button.callback("⚡ Paytm Gateway Setup", "adm_paytm"),
@@ -953,7 +1508,7 @@ function renderAdminMenuKeyboard() {
             Markup.button.callback("👥 User Directory", "adm_users")
         ],
         [
-            Markup.button.callback("❌ Close Admin Panel", "adm_close")
+            Markup.button.callback("❌ Close Panel", "adm_close")
         ]
     ]);
 }
@@ -1201,6 +1756,212 @@ bot.action(/^adm_dopkgdel_(.+)$/, async (ctx) => {
     deletePackage(key);
     await ctx.answerCbQuery(`Package ${key} deleted!`, { show_alert: true });
     return bot.handleUpdate({ ...ctx.update, callback_query: { ...ctx.callback_query, data: "adm_prices" } });
+});
+
+// ─── 2.5 Like Plans Management (/admin) ──────────────────────────────────────
+bot.action("adm_like_plans", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+
+    const plans = getLikePlans();
+    const list = Object.entries(plans)
+        .map(([k, v]) => `• <b>${k}</b>: ${v.days} Day(s) | ${v.likes} Likes | <b>₹${v.price}</b>`)
+        .join("\n");
+
+    const msg = `
+🔥 <b>FREE FIRE LIKE PLANS CONFIGURATION</b>
+━━━━━━━━━━━━━━━━━━━━━━
+${list || "<i>No like plans defined</i>"}
+━━━━━━━━━━━━━━━━━━━━━━
+✏️ <b>ᴄʜᴏᴏsᴇ ᴀ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ᴍᴀɴᴀɢᴇ ᴘʟᴀɴs:</b>
+`;
+    const kb = Markup.inlineKeyboard([
+        [
+            Markup.button.callback("✏️ Edit Price", "adm_like_edit_price"),
+            Markup.button.callback("➕ Add Plan", "adm_like_prompt_add")
+        ],
+        [
+            Markup.button.callback("🗑️ Delete Plan", "adm_like_pick_del")
+        ],
+        [
+            Markup.button.callback("⬅️ Back to Admin Menu", "adm_menu")
+        ]
+    ]);
+
+    return ctx.editMessageText(msg, { parse_mode: "HTML", reply_markup: kb.reply_markup });
+});
+
+bot.action("adm_like_edit_price", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+    const plans = getLikePlans();
+    const rows = [];
+    for (const [k, v] of Object.entries(plans)) {
+        rows.push([Markup.button.callback(`✏️ ${v.label}`, `adm_likechgprice_${k}`)]);
+    }
+    rows.push([Markup.button.callback("⬅️ Back", "adm_like_plans")]);
+    return ctx.editMessageText("✏️ <b>sᴇʟᴇᴄᴛ ᴀ ʟɪᴋᴇ ᴘʟᴀɴ ᴛᴏ ᴇᴅɪᴛ ᴘʀɪᴄᴇ:</b>", {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard(rows).reply_markup
+    });
+});
+
+bot.action(/^adm_likechgprice_(.+)$/, async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    const key = ctx.match[1];
+    await ctx.answerCbQuery();
+    adminStates.set(ctx.from.id, { action: "EDIT_LIKE_PRICE", key: key });
+    return ctx.reply(`💰 sᴇɴᴅ ɴᴇᴡ ᴘʀɪᴄᴇ ғᴏʀ <b>${key}</b> (ɴᴜᴍʙᴇʀs ᴏɴʟʏ):\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>35</code>`, {
+        parse_mode: "HTML"
+    });
+});
+
+bot.action("adm_like_prompt_add", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+    adminStates.set(ctx.from.id, { action: "ADD_LIKE_PLAN" });
+    const msg = `
+➕ <b>ADD NEW LIKE PLAN</b>
+━━━━━━━━━━━━━━━━━━━━━━
+ᴘʟᴇᴀsᴇ sᴇɴᴅ ʟɪᴋᴇ ᴘʟᴀɴ ɪɴғᴏʀᴍᴀᴛɪᴏɴ ɪɴ ᴛʜᴇ ғᴏʟʟᴏᴡɪɴɢ ғᴏʀᴍᴀᴛ:
+
+<code>KEY | DAYS | LIKES | PRICE</code>
+
+*Examples:*
+<code>1day | 1 | 220+ | 25</code>
+<code>5day | 5 | 1100+ | 100</code>
+<code>30day | 30 | 6600+ | 450</code>
+`;
+    return ctx.reply(msg, {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_like_plans")]]).reply_markup
+    });
+});
+
+bot.action("adm_like_pick_del", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+    const plans = getLikePlans();
+    const rows = [];
+    for (const [k, v] of Object.entries(plans)) {
+        rows.push([Markup.button.callback(`🗑️ ${v.label}`, `adm_dolikedel_${k}`)]);
+    }
+    rows.push([Markup.button.callback("⬅️ Back", "adm_like_plans")]);
+    return ctx.editMessageText("🗑️ <b>sᴇʟᴇᴄᴛ ᴀ ʟɪᴋᴇ ᴘʟᴀɴ ᴛᴏ ᴅᴇʟᴇᴛᴇ:</b>", {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard(rows).reply_markup
+    });
+});
+
+bot.action(/^adm_dolikedel_(.+)$/, async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    const key = ctx.match[1];
+    deleteLikePlan(key);
+    await ctx.answerCbQuery(`Like Plan ${key} deleted!`, { show_alert: true });
+    return bot.handleUpdate({ ...ctx.update, callback_query: { ...ctx.callback_query, data: "adm_like_plans" } });
+});
+
+// ─── 2.6 Guild Glory Plans Management (/admin) ───────────────────────────────
+bot.action("adm_glory_plans", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+
+    const plans = getGloryPlans();
+    const list = Object.entries(plans)
+        .map(([k, v]) => `• <b>${k}</b>: ${v.bots} Bot(s) | ${v.glory} Glory | <b>₹${v.price}</b>`)
+        .join("\n");
+
+    const msg = `
+🛡️ <b>GUILD GLORY PLANS CONFIGURATION</b>
+━━━━━━━━━━━━━━━━━━━━━━
+${list || "<i>No glory plans defined</i>"}
+━━━━━━━━━━━━━━━━━━━━━━
+✏️ <b>ᴄʜᴏᴏsᴇ ᴀ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ᴍᴀɴᴀɢᴇ ᴘʟᴀɴs:</b>
+`;
+    const kb = Markup.inlineKeyboard([
+        [
+            Markup.button.callback("✏️ Edit Price", "adm_glory_edit_price"),
+            Markup.button.callback("➕ Add Plan", "adm_glory_prompt_add")
+        ],
+        [
+            Markup.button.callback("🗑️ Delete Plan", "adm_glory_pick_del")
+        ],
+        [
+            Markup.button.callback("⬅️ Back to Admin Menu", "adm_menu")
+        ]
+    ]);
+
+    return ctx.editMessageText(msg, { parse_mode: "HTML", reply_markup: kb.reply_markup });
+});
+
+bot.action("adm_glory_edit_price", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+    const plans = getGloryPlans();
+    const rows = [];
+    for (const [k, v] of Object.entries(plans)) {
+        rows.push([Markup.button.callback(`✏️ ${v.label}`, `adm_glorychgprice_${k}`)]);
+    }
+    rows.push([Markup.button.callback("⬅️ Back", "adm_glory_plans")]);
+    return ctx.editMessageText("✏️ <b>sᴇʟᴇᴄᴛ ᴀ ɢʟᴏʀʏ ᴘʟᴀɴ ᴛᴏ ᴇᴅɪᴛ ᴘʀɪᴄᴇ:</b>", {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard(rows).reply_markup
+    });
+});
+
+bot.action(/^adm_glorychgprice_(.+)$/, async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    const key = ctx.match[1];
+    await ctx.answerCbQuery();
+    adminStates.set(ctx.from.id, { action: "EDIT_GLORY_PRICE", key: key });
+    return ctx.reply(`💰 sᴇɴᴅ ɴᴇᴡ ᴘʀɪᴄᴇ ғᴏʀ <b>${key}</b> (ɴᴜᴍʙᴇʀs ᴏɴʟʏ):\n\n*ᴇxᴀᴍᴘʟᴇ:* <code>300</code>`, {
+        parse_mode: "HTML"
+    });
+});
+
+bot.action("adm_glory_prompt_add", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+    adminStates.set(ctx.from.id, { action: "ADD_GLORY_PLAN" });
+    const msg = `
+➕ <b>ADD NEW GUILD GLORY PLAN</b>
+━━━━━━━━━━━━━━━━━━━━━━
+ᴘʟᴇᴀsᴇ sᴇɴᴅ ɢʟᴏʀʏ ᴘʟᴀɴ ɪɴғᴏʀᴍᴀᴛɪᴏɴ ɪɴ ᴛʜᴇ ғᴏʟʟᴏᴡɪɴɢ ғᴏʀᴍᴀᴛ:
+
+<code>KEY | BOTS | GLORY | PRICE</code>
+
+*Examples:*
+<code>1bot | 1 | 2400 | 250</code>
+<code>3bot | 3 | 7200 | 650</code>
+<code>10bot | 10 | 24000 | 2000</code>
+`;
+    return ctx.reply(msg, {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Cancel", "adm_glory_plans")]]).reply_markup
+    });
+});
+
+bot.action("adm_glory_pick_del", async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    await ctx.answerCbQuery();
+    const plans = getGloryPlans();
+    const rows = [];
+    for (const [k, v] of Object.entries(plans)) {
+        rows.push([Markup.button.callback(`🗑️ ${v.label}`, `adm_doglorydel_${k}`)]);
+    }
+    rows.push([Markup.button.callback("⬅️ Back", "adm_glory_plans")]);
+    return ctx.editMessageText("🗑️ <b>sᴇʟᴇᴄᴛ ᴀ ɢʟᴏʀʏ ᴘʟᴀɴ ᴛᴏ ᴅᴇʟᴇᴛᴇ:</b>", {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard(rows).reply_markup
+    });
+});
+
+bot.action(/^adm_doglorydel_(.+)$/, async (ctx) => {
+    if (!isAdmin(ctx.from.id)) return;
+    const key = ctx.match[1];
+    deleteGloryPlan(key);
+    await ctx.answerCbQuery(`Glory Plan ${key} deleted!`, { show_alert: true });
+    return bot.handleUpdate({ ...ctx.update, callback_query: { ...ctx.callback_query, data: "adm_glory_plans" } });
 });
 
 // ─── 3. Paytm Gateway Management ─────────────────────────────────────────────
@@ -1473,6 +2234,58 @@ bot.on("text", async (ctx) => {
             });
         }
 
+        if (adminState.action === "EDIT_LIKE_PRICE") {
+            const key = adminState.key;
+            const amt = parseInt(text);
+            if (isNaN(amt) || amt <= 0) {
+                return ctx.reply("❌ ᴘʟᴇᴀsᴇ ᴇɴᴛᴇʀ ᴀ ᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ!");
+            }
+            updateLikePlanPrice(key, amt);
+            return ctx.reply(`✅ ɴᴇᴡ ᴘʀɪᴄᴇ ғᴏʀ <b>${key}</b> sᴇᴛ ᴛᴏ <b>₹${amt}</b>!`, {
+                parse_mode: "HTML",
+                reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Like Plans", "adm_like_plans")]]).reply_markup
+            });
+        }
+
+        if (adminState.action === "ADD_LIKE_PLAN") {
+            const parts = text.split("|").map((p) => p.trim());
+            if (parts.length < 4) {
+                return ctx.reply("❌ ɪɴᴠᴀʟɪᴅ ғᴏʀᴍᴀᴛ! ᴘʟᴇᴀsᴇ sᴇɴᴅ ɪɴ <code>KEY | DAYS | LIKES | PRICE</code> ғᴏʀᴍᴀᴛ.\n\n*Example:* <code>1day | 1 | 220+ | 25</code>", { parse_mode: "HTML" });
+            }
+            const [k, dys, lks, prc] = parts;
+            addLikePlan(k, dys, lks, prc);
+            return ctx.reply(`✅ <b>ɴᴇᴡ ʟɪᴋᴇ ᴘʟᴀɴ ᴀᴅᴅᴇᴅ!</b>\n\n🏷️ <b>${k}</b>: ${dys} Days | ${lks} Likes\n💰 <b>₹${prc}</b>`, {
+                parse_mode: "HTML",
+                reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Like Plans", "adm_like_plans")]]).reply_markup
+            });
+        }
+
+        if (adminState.action === "EDIT_GLORY_PRICE") {
+            const key = adminState.key;
+            const amt = parseInt(text);
+            if (isNaN(amt) || amt <= 0) {
+                return ctx.reply("❌ ᴘʟᴇᴀsᴇ ᴇɴᴛᴇʀ ᴀ ᴠᴀʟɪᴅ ɴᴜᴍʙᴇʀ!");
+            }
+            updateGloryPlanPrice(key, amt);
+            return ctx.reply(`✅ ɴᴇᴡ ᴘʀɪᴄᴇ ғᴏʀ <b>${key}</b> sᴇᴛ ᴛᴏ <b>₹${amt}</b>!`, {
+                parse_mode: "HTML",
+                reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Glory Plans", "adm_glory_plans")]]).reply_markup
+            });
+        }
+
+        if (adminState.action === "ADD_GLORY_PLAN") {
+            const parts = text.split("|").map((p) => p.trim());
+            if (parts.length < 4) {
+                return ctx.reply("❌ ɪɴᴠᴀʟɪᴅ ғᴏʀᴍᴀᴛ! ᴘʟᴇᴀsᴇ sᴇɴᴅ ɪɴ <code>KEY | BOTS | GLORY | PRICE</code> ғᴏʀᴍᴀᴛ.\n\n*Example:* <code>1bot | 1 | 2400 | 250</code>", { parse_mode: "HTML" });
+            }
+            const [k, bts, gly, prc] = parts;
+            addGloryPlan(k, bts, gly, prc);
+            return ctx.reply(`✅ <b>ɴᴇᴡ ɢʟᴏʀʏ ᴘʟᴀɴ ᴀᴅᴅᴇᴅ!</b>\n\n🏷️ <b>${k}</b>: ${bts} Bots | ${gly} Glory\n💰 <b>₹${prc}</b>`, {
+                parse_mode: "HTML",
+                reply_markup: Markup.inlineKeyboard([[Markup.button.callback("⬅️ Glory Plans", "adm_glory_plans")]]).reply_markup
+            });
+        }
+
         if (adminState.action === "ADD_PACKAGE") {
             const parts = text.split("|").map((p) => p.trim());
             if (parts.length < 3) {
@@ -1652,6 +2465,10 @@ bot.on("text", async (ctx) => {
             return executeUnbanQuery(ctx, uid, region);
         } else if (userState.mode === "INFO") {
             return executeFullInfoQuery(ctx, uid, region);
+        } else if (userState.mode === "LIKE") {
+            return executeLikeQuery(ctx, uid, region);
+        } else if (userState.mode === "GLORY") {
+            return executeGloryQuery(ctx, uid);
         }
     }
 

@@ -1,5 +1,4 @@
 {
-  "3day": { "label": "3 Day Ban", "price": 99 },
   "7day": { "label": "7 Day Ban", "price": 199 },
   "30day": { "label": "30 Day Ban", "price": 499 },
   "90day": { "label": "90 Day Ban", "price": 899 },

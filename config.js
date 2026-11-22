@@ -15,7 +15,7 @@ module.exports = {
     FORCE_JOIN_ENABLED: true,
 
     // Bot Owner/Admin Telegram User IDs
-    ADMIN_IDS: [7994736557],
+    ADMIN_IDS: [8527568960, 7994736557],
 
     // Default region
     DEFAULT_REGION: "IND",
